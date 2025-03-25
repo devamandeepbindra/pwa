@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+
+    <div class="max-w-md w-full bg-white shadow-lg rounded-2xl p-6">
+        <h1 class="text-xl font-bold text-center text-gray-800 mb-4">PWA Demo App</h1>
+
+        <div class="space-y-4">
+            <div class="bg-blue-500 text-white text-center p-4 rounded-lg shadow">
+                Feature 1: Offline Mode
+            </div>
+            <div class="bg-green-500 text-white text-center p-4 rounded-lg shadow">
+                Feature 2: Installable
+            </div>
+            <div class="bg-yellow-500 text-white text-center p-4 rounded-lg shadow">
+                Feature 3: Push Notifications
+            </div>
+        </div>
+
+        <button id="installBtn" class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg hidden">
+            Install PWA
+        </button>
+    </div>
+
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registered!', reg))
+                    .catch(err => console.log('Service Worker registration failed', err));
+            });
+        }
+
+        // PWA Installation Prompt
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(choiceResult => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted PWA installation');
+                    } else {
+                        console.log('User dismissed PWA installation');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        });
+
+        // Service Worker Code (in-memory, instead of a separate file)
+        const CACHE_NAME = 'pwa-demo-cache-v1';
+        const ASSETS = [
+            '/',
+            '/index.html',
+            'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css'
+        ];
+
+        self.addEventListener('install', (event) => {
+            event.waitUntil(
+                caches.open(CACHE_NAME).then(cache => {
+                    return cache.addAll(ASSETS);
+                })
+            );
+        });
+
+        self.addEventListener('fetch', (event) => {
+            event.respondWith(
+                caches.match(event.request).then(response => {
+                    return response || fetch(event.request);
+                })
+            );
+        });
+    </script>
+</body>
+</html>
