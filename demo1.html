@@ -1,90 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PWA Demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>USA City Flight Booking</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fa;
+      padding: 2rem;
+    }
+    .form-search {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.7rem;
+      border-radius: 5px;
+      border: 1px solid #ced4da;
+    }
+    .btn1 {
+      background-color: #ffc107;
+      font-weight: bold;
+      width: 100%;
+      border-radius: 5px;
+    }
+    .dropdown-container {
+      position: relative;
+    }
+    .suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-top: none;
+      z-index: 1000;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .suggestion-item {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    .suggestion-item:hover {
+      background-color: #f1f1f1;
+    }
+    #msg {
+      display: none;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+  </style>
 </head>
-<body class="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+<body>
 
-    <div class="max-w-md w-full bg-white shadow-lg rounded-2xl p-6">
-        <h1 class="text-xl font-bold text-center text-gray-800 mb-4">PWA Demo App</h1>
+  <form action="https://submit-form.com/IPe2CqOWG" class="form-search align-items-stretch mb-3">
+    <div class="d-flex row g-4 p-3">
+      <input type="text" id="name" name="name" placeholder="Name" required class="form-control" />
+      <input type="number" id="phone" name="phone" placeholder="Phone No" required class="form-control" />
 
-        <div class="space-y-4">
-            <div class="bg-blue-500 text-white text-center p-4 rounded-lg shadow">
-                Feature 1: Offline Mode
-            </div>
-            <div class="bg-green-500 text-white text-center p-4 rounded-lg shadow">
-                Feature 2: Installable
-            </div>
-            <div class="bg-yellow-500 text-white text-center p-4 rounded-lg shadow">
-                Feature 3: Push Notifications
-            </div>
-        </div>
+      <div class="dropdown-container">
+        <input type="text" id="from" name="from" placeholder="From City" required class="form-control" autocomplete="off"/>
+        <div id="from-suggestions" class="suggestions"></div>
+      </div>
 
-        <button id="installBtn" class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg hidden">
-            Install PWA
-        </button>
+      <div class="dropdown-container">
+        <input type="text" id="to" name="to" placeholder="To City" required class="form-control" autocomplete="off"/>
+        <div id="to-suggestions" class="suggestions"></div>
+      </div>
+
+      <input type="hidden" name="_redirect" value="https://flightsscout.com/?success=true">
+      <button type="submit" class="btn btn-warning pt-2 pb-2 shadow-sm border-3 btn1">Submit Now</button>
+
+      <div class="form-control text-center" id="msg">
+        <b>Thanks for providing details. Our representative will call you shortly. If you wish to connect now <a href="tel:123456789">📞123456789</a></b>
+      </div>
     </div>
+  </form>
 
-    <script>
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('Service Worker registered!', reg))
-                    .catch(err => console.log('Service Worker registration failed', err));
-            });
-        }
+  <script>
+    $(document).ready(function () {
+      function fetchCities(inputId, suggestionsId) {
+        $("#" + inputId).on("input", function () {
+          let query = $(this).val();
+          let suggestionsBox = $("#" + suggestionsId);
 
-        // PWA Installation Prompt
-        let deferredPrompt;
-        const installBtn = document.getElementById('installBtn');
+          if (query.length < 1) {
+            suggestionsBox.hide();
+            return;
+          }
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBtn.style.display = 'block';
-        });
+          $.ajax({
+            url: "https://nominatim.openstreetmap.org/search",
+            dataType: "json",
+            data: {
+              q: query + ', USA',
+              format: "json",
+              addressdetails: 1,
+              limit: 10,
+              countrycodes: 'us'
+            },
+            success: function (data) {
+              suggestionsBox.empty();
+              let cities = new Set();
 
-        installBtn.addEventListener('click', () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then(choiceResult => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted PWA installation');
-                    } else {
-                        console.log('User dismissed PWA installation');
-                    }
-                    deferredPrompt = null;
-                });
+              data.forEach(function (location) {
+                if (
+                  location.address &&
+                  location.address.city &&
+                  !cities.has(location.address.city)
+                ) {
+                  let city = location.address.city;
+                  cities.add(city);
+                  suggestionsBox.append(
+                    `<div class="suggestion-item" data-name="${city}">${city}</div>`
+                  );
+                }
+              });
+
+              if (cities.size > 0) {
+                suggestionsBox.show();
+              } else {
+                suggestionsBox.hide();
+              }
+
+              $(".suggestion-item").on("click", function () {
+                $("#" + inputId).val($(this).attr("data-name"));
+                suggestionsBox.hide();
+              });
             }
+          });
         });
+      }
 
-        // Service Worker Code (in-memory, instead of a separate file)
-        const CACHE_NAME = 'pwa-demo-cache-v1';
-        const ASSETS = [
-            '/',
-            '/index.html',
-            'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css'
-        ];
+      fetchCities("from", "from-suggestions");
+      fetchCities("to", "to-suggestions");
 
-        self.addEventListener('install', (event) => {
-            event.waitUntil(
-                caches.open(CACHE_NAME).then(cache => {
-                    return cache.addAll(ASSETS);
-                })
-            );
-        });
+      if (window.location.href.includes("?success=true")) {
+        $("#msg").fadeIn();
+      }
+    });
+  </script>
 
-        self.addEventListener('fetch', (event) => {
-            event.respondWith(
-                caches.match(event.request).then(response => {
-                    return response || fetch(event.request);
-                })
-            );
-        });
-    </script>
 </body>
 </html>
