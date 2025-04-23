@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Book Appointment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-6 pb-20">
+        <!-- Header -->
+        <header class="mb-6 flex justify-between items-center">
+            <button class="text-gray-600">
+                <i data-feather="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">Book Appointment</h1>
+            <div class="w-6"></div>
+        </header>
+
+        <!-- Veterinarian Info -->
+        <section class="mb-6 bg-white rounded-lg shadow-md p-4 flex items-center">
+            <img src="https://placehold.co/50" alt="Dr. Emily Rodriguez" class="w-16 h-16 rounded-full mr-4">
+            <div>
+                <h2 class="text-lg font-bold text-gray-800">Dr. Emily Rodriguez</h2>
+                <p class="text-sm text-gray-500">Small Animal Specialist</p>
+            </div>
+        </section>
+
+        <!-- Select Pet -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Select Pet</h2>
+            <div class="space-y-4">
+                <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
+                    <img src="https://placehold.co/40" alt="Fluffy" class="w-12 h-12 rounded-full mr-4">
+                    <div class="flex-grow">
+                        <h3 class="font-semibold text-gray-800">Fluffy</h3>
+                        <p class="text-sm text-gray-500">Golden Retriever | 3 years old</p>
+                    </div>
+                    <input type="radio" name="pet" class="form-radio" value="fluffy">
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
+                    <img src="https://placehold.co/40" alt="Whiskers" class="w-12 h-12 rounded-full mr-4">
+                    <div class="flex-grow">
+                        <h3 class="font-semibold text-gray-800">Whiskers</h3>
+                        <p class="text-sm text-gray-500">Siamese Cat | 2 years old</p>
+                    </div>
+                    <input type="radio" name="pet" class="form-radio" value="whiskers">
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 flex items-center justify-center">
+                    <button class="flex items-center text-blue-600">
+                        <i data-feather="plus-circle" class="w-6 h-6 mr-2"></i>
+                        Add New Pet
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Appointment Type -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Appointment Type</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                    <i data-feather="clipboard" class="w-10 h-10 mx-auto mb-2 text-blue-600"></i>
+                    <h3 class="font-semibold text-gray-800">Routine Check-up</h3>
+                    <input type="radio" name="appointment-type" class="hidden" value="checkup">
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                    <i data-feather="activity" class="w-10 h-10 mx-auto mb-2 text-green-600"></i>
+                    <h3 class="font-semibold text-gray-800">Vaccination</h3>
+                    <input type="radio" name="appointment-type" class="hidden" value="vaccination">
+                </div>
+            </div>
+        </section>
+
+        <!-- Continue Button -->
+        <section>
+            <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+                Continue
+                <i data-feather="arrow-right" class="w-5 h-5 ml-2"></i>
+            </button>
+        </section>
+    </div>
+
+    <script>
+        feather.replace();
+
+        // Add interactive selection for appointment type and pet
+        document.querySelectorAll('.bg-white').forEach(el => {
+            el.addEventListener('click', function() {
+                // Remove active state from all elements in the same group
+                this.closest('section').querySelectorAll('.bg-white').forEach(item => {
+                    item.classList.remove('border-2', 'border-blue-600');
+                });
+                
+                // Add active state to clicked element
+                this.classList.add('border-2', 'border-blue-600');
+                
+                // Check the corresponding radio button
+                const radio = this.querySelector('input[type="radio"]');
+                if (radio) radio.checked = true;
+            });
+        });
+    </script>
+</body>
+</html>

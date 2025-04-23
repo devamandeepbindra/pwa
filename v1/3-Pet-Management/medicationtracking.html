@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Medication Tracking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-6 pb-20">
+        <!-- Header -->
+        <header class="mb-6 flex justify-between items-center">
+            <button class="text-gray-600">
+                <i data-feather="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">Medication Tracking</h1>
+            <button class="text-gray-600">
+                <i data-feather="plus" class="w-6 h-6"></i>
+            </button>
+        </header>
+
+        <!-- Pet Summary -->
+        <section class="mb-6 bg-white rounded-lg shadow-md p-4 flex items-center">
+            <img src="https://placehold.co/50" alt="Fluffy" class="w-16 h-16 rounded-full mr-4">
+            <div>
+                <h2 class="text-lg font-bold text-gray-800">Fluffy</h2>
+                <p class="text-sm text-gray-500">Golden Retriever | 3 years old</p>
+            </div>
+        </section>
+
+        <!-- Current Medications Overview -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Current Medications</h2>
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <div class="grid grid-cols-3 text-center">
+                    <div>
+                        <p class="text-xs text-gray-500">Active</p>
+                        <p class="font-semibold text-green-600">2</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500">Completed</p>
+                        <p class="font-semibold text-blue-600">3</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500">Scheduled</p>
+                        <p class="font-semibold text-orange-600">1</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Medication List -->
+        <section class="space-y-4 mb-6">
+            <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
+                <div class="mr-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i data-feather="activity" class="w-6 h-6 text-blue-600"></i>
+                    </div>
+                </div>
+                <div className="flex-grow">
+                    <h3 class="font-semibold text-gray-800">Flea Prevention</h3>
+                    <p class="text-sm text-gray-500">Monthly Tablet</p>
+                    <p class="text-xs text-gray-400">Next dose: June 15, 2024</p>
+                </div>
+                <div class="flex space-x-2">
+                    <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">Active</span>
+                    <button class="text-gray-500 hover:bg-gray-100 p-2 rounded-full">
+                        <i data-feather="more-vertical" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
+                <div class="mr-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <i data-feather="heart" class="w-6 h-6 text-green-600"></i>
+                    </div>
+                </div>
+                <div className="flex-grow">
+                    <h3 class="font-semibold text-gray-800">Joint Supplement</h3>
+                    <p class="text-sm text-gray-500">Daily Soft Chew</p>
+                    <p class="text-xs text-gray-400">Next dose: Today at 6 PM</p>
+                </div>
+                <div class="flex space-x-2">
+                    <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">Active</span>
+                    <button class="text-gray-500 hover:bg-gray-100 p-2 rounded-full">
+                        <i data-feather="more-vertical" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
+                <div class="mr-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                        <i data-feather="clipboard" class="w-6 h-6 text-purple-600"></i>
+                    </div>
+                </div>
+                <div className="flex-grow">
+                    <h3 class="font-semibold text-gray-800">Antibiotic Course</h3>
+                    <p class="text-sm text-gray-500">Prescribed Treatment</p>
+                    <p class="text-xs text-gray-400">Completed on April 30, 2024</p>
+                </div>
+                <div class="flex space-x-2">
+                    <span class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">Completed</span>
+                    <button class="text-gray-500 hover:bg-gray-100 p-2 rounded-full">
+                        <i data-feather="more-vertical" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Medication Calendar -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Medication Calendar</h2>
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <div class="grid grid-cols-7 text-center">
+                    <div class="text-xs text-gray-500">Sun</div>
+                    <div class="text-xs text-gray-500">Mon</div>
+                    <div class="text-xs text-gray-500">Tue</div>
+                    <div class="text-xs text-gray-500">Wed</div>
+                    <div class="text-xs text-gray-500">Thu</div>
+                    <div class="text-xs text-gray-500">Fri</div>
+                    <div class="text-xs text-gray-500">Sat</div>
+
+                    <!-- Calendar days -->
+                    <div class="py-2 text-gray-400">26</div>
+                    <div class="py-2 text-gray-400">27</div>
+                    <div class="py-2 text-gray-400">28</div>
+                    <div class="py-2">1</div>
+                    <div class="py-2">2</div>
+                    <div class="py-2 bg-blue-100 relative">
+                        <span class="inline-block w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center relative z-10">3</span>
+                        <span class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-green-600 rounded-full"></span>
+                    </div>
+                    <div class="py-2">4</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add New Medication -->
+        <section>
+            <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                <i data-feather="plus-circle" class="w-12 h-12 mx-auto mb-4 text-blue-600"></i>
+                <h3 class="font-semibold text-gray-800 mb-2">Add New Medication</h3>
+                <p class="text-sm text-gray-500 mb-4">Track a new medication for your pet</p>
+                <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                    Add Medication
+                </button>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-lg">
+            <div class="grid grid-cols-5 py-3">
+                <button class="flex flex-col items-center text-gray-500 hover:text-blue-600">
+                    <i data-feather="home" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Home</span>
+                </button>
+                <button class="flex flex-col items-center text-gray-500 hover:text-blue-600">
+                    <i data-feather="calendar" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Appointments</span>
+                </button>
+                <button class="flex flex-col items-center text-blue-600">
+                    <i data-feather="heart" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Pets</span>
+                </button>
+                <button class="flex flex-col items-center text-gray-500 hover:text-blue-600">
+                    <i data-feather="shopping-bag" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Shop</span>
+                </button>
+                <button class="flex flex-col items-center text-gray-500 hover:text-blue-600">
+                    <i data-feather="user" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Profile</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

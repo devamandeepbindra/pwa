@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Payment Methods</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-6 pb-20">
+        <!-- Header -->
+        <header class="mb-6 flex justify-between items-center">
+            <button class="text-gray-600">
+                <i data-feather="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">Payment Methods</h1>
+            <div class="w-6"></div> <!-- Empty div for layout balance -->
+        </header>
+
+        <!-- Current Payment Methods -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Your Payment Methods</h2>
+            <div class="space-y-4">
+                <!-- Default Card -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                <i data-feather="credit-card" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">•••• 4321</h3>
+                                <p class="text-xs text-gray-500">Visa • Expires 05/26</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full mr-2">Default</span>
+                            <button class="text-gray-500">
+                                <i data-feather="more-vertical" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <div class="text-gray-500">Sarah Johnson</div>
+                        <button class="text-blue-600 font-medium">Edit</button>
+                    </div>
+                </div>
+
+                <!-- Secondary Card -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex items-center">
+                            <div class="bg-purple-100 p-2 rounded-full mr-3">
+                                <i data-feather="credit-card" class="w-5 h-5 text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">•••• 7890</h3>
+                                <p class="text-xs text-gray-500">Mastercard • Expires 09/25</p>
+                            </div>
+                        </div>
+                        <button class="text-gray-500">
+                            <i data-feather="more-vertical" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <div class="text-gray-500">Sarah Johnson</div>
+                        <button class="text-blue-600 font-medium">Edit</button>
+                    </div>
+                </div>
+
+                <!-- PayPal Account -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between items-center mb-1">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                <i data-feather="dollar-sign" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">PayPal</h3>
+                                <p class="text-xs text-gray-500">sarah.johnson@example.com</p>
+                            </div>
+                        </div>
+                        <button class="text-gray-500">
+                            <i data-feather="more-vertical" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-end text-sm">
+                        <button class="text-blue-600 font-medium">Disconnect</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add New Payment Method Button -->
+        <section class="mb-6">
+            <button class="w-full bg-white text-gray-700 py-3 rounded-lg shadow-md hover:bg-gray-50 transition flex items-center justify-center">
+                <i data-feather="plus" class="w-5 h-5 mr-2 text-blue-600"></i>
+                Add Payment Method
+            </button>
+        </section>
+
+        <!-- Recent Transactions -->
+        <section class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-gray-800">Recent Transactions</h2>
+                <button class="text-sm text-blue-600">View All</button>
+            </div>
+            <div class="space-y-3">
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between items-start">
+                        <div class="flex">
+                            <div class="bg-green-100 p-2 rounded-full mr-3">
+                                <i data-feather="check-circle" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">PetCare Premium</h3>
+                                <p class="text-xs text-gray-500">Apr 15, 2025 • Visa •••• 4321</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold text-gray-800">$9.99</p>
+                            <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Successful</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between items-start">
+                        <div class="flex">
+                            <div class="bg-green-100 p-2 rounded-full mr-3">
+                                <i data-feather="check-circle" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">Vet Video Consultation</h3>
+                                <p class="text-xs text-gray-500">Mar 28, 2025 • PayPal</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold text-gray-800">$35.00</p>
+                            <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Successful</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between items-start">
+                        <div class="flex">
+                            <div class="bg-green-100 p-2 rounded-full mr-3">
+                                <i data-feather="check-circle" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">PetCare Premium</h3>
+                                <p class="text-xs text-gray-500">Mar 15, 2025 • Visa •••• 4321</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold text-gray-800">$9.99</p>
+                            <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Successful</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Payment Settings -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Payment Settings</h2>
+            <div class="space-y-3">
+                <button class="flex items-center justify-between w-full bg-white p-4 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <i data-feather="bell" class="w-5 h-5 mr-3 text-gray-500"></i>
+                        <span class="text-gray-700">Payment Notifications</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-sm text-gray-500 mr-2">On</span>
+                        <i data-feather="chevron-right" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                </button>
+                
+                <button class="flex items-center justify-between w-full bg-white p-4 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <i data-feather="refresh-cw" class="w-5 h-5 mr-3 text-gray-500"></i>
+                        <span class="text-gray-700">Auto-Renewal Settings</span>
+                    </div>
+                    <i data-feather="chevron-right" class="w-5 h-5 text-gray-400"></i>
+                </button>
+                
+                <button class="flex items-center justify-between w-full bg-white p-4 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <i data-feather="file-text" class="w-5 h-5 mr-3 text-gray-500"></i>
+                        <span class="text-gray-700">Billing Address</span>
+                    </div>
+                    <i data-feather="chevron-right" class="w-5 h-5 text-gray-400"></i>
+                </button>
+                
+                <button class="flex items-center justify-between w-full bg-white p-4 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <i data-feather="file" class="w-5 h-5 mr-3 text-gray-500"></i>
+                        <span class="text-gray-700">Receipts & Invoices</span>
+                    </div>
+                    <i data-feather="chevron-right" class="w-5 h-5 text-gray-400"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Secure Payment Notice -->
+        <section>
+            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <div class="flex items-center mb-2">
+                    <i data-feather="shield" class="w-5 h-5 text-gray-500 mr-2"></i>
+                    <h3 class="font-medium text-gray-700">Secure Payments</h3>
+                </div>
+                <p class="text-sm text-gray-600">
+                    Your payment information is encrypted and securely stored. We use industry-standard security measures to protect your data.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

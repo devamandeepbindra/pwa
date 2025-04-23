@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0F4C75">
+    <title>Luvfurpaws - Saved Cards</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Take care of your furry friends with the Luvfurpaws app">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Luvfurpaws">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C75',
+                        secondary: '#3282B8',
+                        accent: '#F78D49',
+                        light: '#BBE1FA',
+                        dark: '#0A2D42'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .app-container {
+            width: 100%;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            background-color: #f8f8f8;
+        }
+
+        /* Card animations */
+        .card-item {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card-item:active {
+            transform: scale(0.98);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        /* Card flip effect */
+        .card-flip {
+            perspective: 1000px;
+            transition: transform 0.6s;
+        }
+        
+        .card-flip.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        
+        /* Success animation */
+        .success-animation {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Card input styling */
+        .card-input {
+            transition: border-color 0.2s ease;
+        }
+        
+        .card-input:focus {
+            border-color: #3282B8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(50, 130, 184, 0.15);
+        }
+        
+        /* Modal animation */
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        /* Card type logos */
+        .card-logo {
+            width: 40px;
+            height: 25px;
+            border-radius: 4px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .mastercard {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxNiIgY3k9IjEyIiByPSI4IiBmaWxsPSIjRUIwMDFCIj48L2NpcmNsZT48Y2lyY2xlIG9wYWNpdHk9IjAuOCIgY3g9IjI0IiBjeT0iMTIiIHI9IjgiIGZpbGw9IiNGNzlFMUIiPjwvY2lyY2xlPjwvc3ZnPg==');
+        }
+        
+        .visa {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMzYgNC42OTloLTkuOTk5Yy0uNyAwLTEuMzc2LjI1LTEuODc1LjcxMmwtNS4yNSA1LjIxNWMtLjM3NS4zNzUtLjg3NS41ODctMS4zNzUuNTg3LS41IDAtMS0uMjEyLTEuMzc1LS41ODdsLTEuNzUtMS43MzdjLS4zNzUtLjM3NS0uODc1LS41ODctMS4zNzUtLjU4Ny0uNSAwLTEgLjIxMi0xLjM3NS41ODdsLTcuNSA3LjQ1MkM0Ljc1MSAxNi43MTMgNCAxNy4zMzYgNCAxOC4yMTF2LjkzOGMwIDEuMTYyLjg3NSAyLjA4OSAxLjk5OSAyLjA4OWgyOS45OTdjMS4xMjUgMCAyLjAwNC0uOTI3IDIuMDA0LTIuMDg5VjYuNzg4QzM4IDUuNjI2IDM3LjEyNSA0LjY5OSAzNiA0LjY5OXoiIGZpbGw9IiMxNDM0Q0IiPjwvcGF0aD48cGF0aCBkPSJNMTYuNTAzIDE1YzAgLjgyOC4xNjcgMS41LjUtMi4wNjIuMzM0LS41NjMuNTc3LTEuNDM4LjczLTIuNjI2LjE1My0xLjE4OC4yMy0xLjgxMi4yMy0xLjg3NWwxLjAwNy0uMTg4TDE3LjAxMiAxMGMtLjA3Ni41NjMtLjE0NiAxLjA2My0uMjExIDEuNWguNzY5TDE3LjAxMiAxM2gtLjUxOWExMy4yOTMgMTMuMjkzIDAgMDEtLjE5MiAxLjEyNS0zLjM0IDMuMzQgMCAwMS0uMzQ2IDEuMDYzYy0uMTUzLjI4MS0uMzA3LjQzOC0uNDYxLjQ2OC0uMTU0LjAzMS0uMzA4LS4wMzEtLjQ2LS4xODdsLS4xMTYtLjIxOS4xMTYtLjYyNWMuNDYuMjUuNjkxLjM3NS42OTEuMzc1eiIgZmlsbD0id2hpdGUiPjwvcGF0aD48cGF0aCBkPSJNMjAuOTkgMTVjLjQyNCAwIC42ODQtLjI0LjgxNi0uNzE3bC4xNC0uNDc3YS42ODIuNjgyIDAgMDAtLjM5MS0uODIzYy0uMTY4LS4wNzQtLjI4LS4xNjktLjMzNi0uMjgzYS42NDcuNjQ3IDAgMDEtLjA4NC0uMzYzYzAtLjE1NS4wNTYtLjI5LjE2OC0uNDA3YS41NDQuNTQ0IDAgMDEuNDItLjE3N2MuMTg2IDAgLjM1LjA2NS41MS4xOTVsLjEzOS0uNTczYTEuMjk0IDEuMjk0IDAgMDAtLjY0OC0uMTZjLS4zOCAwLS42NzcuMTA2LS44OTIuMzE5YTEuMDQgMS4wNCAwIDAwLS4zMjIuNzY4Yy0uMDAzLjMzOC4xNDMuNjEzLjQzNC44MjNsLjEyNS4wODhhLjQ0NC40NDQgMCAwMS4yMS4zOTRjMCAuMTc3LS4wNi4zMjMtLjE4Mi40MzZhLjYxMi42MTIgMCAwMS0uNDM0LjE3MS42MzYuNjM2IDAgMDEtLjMzNS0uMDlsLS4xODItLjExNi0uMjEuNTQ0YzAgLjAwMi4yNDYuMTkuNjU0LjQ0OHoiIGZpbGw9IndoaXRlIj48L3BhdGg+PHBhdGggZD0iTTIzLjA1OSAxMi41YS43NjcuNzY3IDAgMDEtLjI1Mi0uNTQ2LjcyNC43MjQgMCAwMS4yMjQtLjU0Yy4xNi0uMTQ2LjM3LS4yMjYuNjE2LS4yNA4uMjUyLjAxMy40ODUuMDgyLjY4NS4yMDRsLjEyNi0uNTU1YTEuODkyIDEuODkyIDAgMDAtLjc2OC0uMTUgMS40MjIgMS40MjIgMCAwMC0xLjA5Mi40NTRjLS4yOC4yOTEtLjQyLjY0MS0uNDIgMS4wNSAwIC40MDkuMTMxLjc1LjM5NCAxLjAyNC4yNjMuMjc0LjYzLjQxMSAxLjEwNC40MTFhMi4wMzMgMi4wMzMgMCAwMC44MzktLjE3OXYtLjU4bC0uOTE2LjI4NmMtLjI2Ni0uMTQ2LS40Mi0uMzMtLjQ2Ni0uNTQ4eiIgZmlsbD0id2hpdGUiPjwvcGF0aD48L3N2Zz4=');
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="bg-white px-4 py-3 flex items-center shadow-sm z-10 sticky top-0">
+            <button onclick="goBack()" class="mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </button>
+            <h1 class="text-lg font-semibold">Saved Cards List</h1>
+        </header>
+
+        <!-- Main Content -->
+        <main class="pb-6">
+            <!-- Saved Cards Section -->
+            <section class="px-4 py-5 bg-white">
+                <h2 class="text-base font-semibold mb-4">Saved Cards</h2>
+                
+                <!-- Card 1 -->
+                <div class="card-item mb-4 border-b border-gray-100 pb-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-10 h-6 mr-3">
+                                <div class="card-logo mastercard"></div>
+                            </div>
+                            <div>
+                                <div class="text-sm">Card Number</div>
+                                <div class="font-medium">xxxx xxxx xxxx 4045</div>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <input type="radio" name="selected_card" id="card1" class="mr-2" checked>
+                            <label for="card1" class="sr-only">Select card ending in 4045</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="card-item mb-4 border-b border-gray-100 pb-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-10 h-6 mr-3">
+                                <div class="card-logo mastercard"></div>
+                            </div>
+                            <div>
+                                <div class="text-sm">Card Number</div>
+                                <div class="font-medium">xxxx xxxx xxxx 2435</div>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <input type="radio" name="selected_card" id="card2" class="mr-2">
+                            <label for="card2" class="sr-only">Select card ending in 2435</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Add New Card Button -->
+                <button id="addCardBtn" class="w-full flex items-center py-3 text-secondary font-medium" onclick="showAddCardForm()">
+                    <div class="w-10 h-6 mr-3 border border-secondary rounded flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    <span>Add New Card</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-auto" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </section>
+            
+            <!-- Add New Card Form (Initially Hidden) -->
+            <div id="addCardForm" class="hidden">
+                <section class="px-4 py-5 bg-white mt-2">
+                    <h2 class="text-base font-semibold mb-4">Card Details</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm text-gray-600 mb-1">Card Number</label>
+                        <div class="relative">
+                            <input type="text" id="cardNumberInput" placeholder="4341 5347 3585 2435" class="card-input w-full py-3 px-4 rounded-lg border border-gray-300 focus:outline-none" maxlength="19">
+                            <div class="absolute right-3 top-3">
+                                <div class="card-logo mastercard"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-4 mb-4">
+                        <div class="flex-1">
+                            <label class="block text-sm text-gray-600 mb-1">Expiry Date</label>
+                            <input type="text" placeholder="MM/YY" class="card-input w-full py-3 px-4 rounded-lg border border-gray-300 focus:outline-none" maxlength="5">
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-sm text-gray-600 mb-1">CVV/CVC</label>
+                            <input type="password" placeholder="•••" class="card-input w-full py-3 px-4 rounded-lg border border-gray-300 focus:outline-none" maxlength="3">
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center mb-4">
+                        <input type="checkbox" id="saveCard" class="h-4 w-4 text-secondary border-gray-300 rounded">
+                        <label for="saveCard" class="ml-2 text-sm text-gray-700">Save card details for future payments</label>
+                    </div>
+                    
+                    <div class="flex space-x-4 mt-6">
+                        <button class="btn flex-1 py-3 rounded-lg bg-secondary text-white font-semibold" onclick="saveNewCard()">Save</button>
+                        <button class="btn flex-1 py-3 rounded-lg border border-gray-300 text-gray-700 font-semibold" onclick="hideAddCardForm()">Cancel</button>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- Bank Account Details (Initially Hidden) -->
+            <div id="bankDetails" class="hidden">
+                <section class="px-4 py-5 bg-white mt-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <input type="radio" name="payment_type" id="bankRadio" class="mr-2" checked>
+                            <label for="bankRadio" class="font-semibold">State Bank Of India</label>
+                        </div>
+                        <button onclick="hideBankDetails()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="text-sm text-gray-600">Savings A/c No.</div>
+                        <div class="font-medium">- 6585</div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="text-sm text-gray-600">A/C Holder Name</div>
+                        <div class="font-medium">Srk gupta</div>
+                    </div>
+                    
+                    <button class="w-full py-2 rounded-full bg-red-100 text-red-500 font-medium" onclick="showRemoveConfirmation()">
+                        Remove Account
+                    </button>
+                </section>
+            </div>
+            
+            <!-- Success Card Added Notification (Initially Hidden) -->
+            <div id="successNotification" class="hidden">
+                <section class="p-5 bg-white mt-2 text-center success-animation">
+                    <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg font-semibold mb-1">Card Successfully Added</h2>
+                    <button class="btn mt-4 px-8 py-2 rounded-full bg-secondary text-white font-medium" onclick="hideSuccessNotification()">Done</button>
+                </section>
+            </div>
+        </main>
+        
+        <!-- Remove Account Confirmation Modal (Initially Hidden) -->
+        <div id="removeConfirmationModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none">
+            <div class="modal-content bg-white rounded-lg w-11/12 max-w-sm p-6 transform translate-y-8">
+                <h3 class="text-lg font-semibold mb-4 text-center">Are you sure you want to remove this account?</h3>
+                <div class="flex space-x-4">
+                    <button class="flex-1 py-2 rounded-lg border border-gray-300 font-medium" onclick="hideRemoveConfirmation()">Cancel</button>
+                    <button class="flex-1 py-2 rounded-lg bg-red-500 text-white font-medium" onclick="removeAccount()">Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for interactions -->
+    <script>
+        // Back button functionality
+        function goBack() {
+            console.log('Going back to previous screen');
+            // window.history.back();
+        }
+        
+        // Show Add Card Form
+        function showAddCardForm() {
+            document.getElementById('addCardForm').classList.remove('hidden');
+            document.getElementById('bankDetails').classList.add('hidden');
+            document.getElementById('successNotification').classList.add('hidden');
+            
+            // Auto-format card number as user types
+            const cardNumberInput = document.getElementById('cardNumberInput');
+            cardNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 0) {
+                    value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+                }
+                e.target.value = value;
+            });
+        }
+        
+        // Hide Add Card Form
+        function hideAddCardForm() {
+            document.getElementById('addCardForm').classList.add('hidden');
+        }
+        
+        // Save New Card
+        function saveNewCard() {
+            document.getElementById('addCardForm').classList.add('hidden');
+            document.getElementById('successNotification').classList.remove('hidden');
+        }
+        
+        // Hide Success Notification
+        function hideSuccessNotification() {
+            document.getElementById('successNotification').classList.add('hidden');
+        }
+        
+        // Show Bank Details
+        function showBankDetails() {
+            document.getElementById('bankDetails').classList.remove('hidden');
+            document.getElementById('addCardForm').classList.add('hidden');
+            document.getElementById('successNotification').classList.add('hidden');
+        }
+        
+        // Hide Bank Details
+        function hideBankDetails() {
+            document.getElementById('bankDetails').classList.add('hidden');
+        }
+        
+        // Show Remove Confirmation Modal
+        function showRemoveConfirmation() {
+            const modal = document.getElementById('removeConfirmationModal');
+            modal.classList.add('show');
+        }
+        
+        // Hide Remove Confirmation Modal
+        function hideRemoveConfirmation() {
+            const modal = document.getElementById('removeConfirmationModal');
+            modal.classList.remove('show');
+        }
+        
+        // Remove Account
+        function removeAccount() {
+            hideRemoveConfirmation();
+            hideBankDetails();
+            // You would typically make an API call here to remove the account
+            console.log('Account removed');
+        }
+        
+        // Initialize: Show bank details by default for demo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Uncomment to show bank details on load
+            // showBankDetails();
+        });
+        
+        // For demo purposes: Card selection
+        const radioButtons = document.querySelectorAll('input[name="selected_card"]');
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.checked) {
+                    // In a real app, you might make this the default card
+                    console.log('Selected card: ' + this.id);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

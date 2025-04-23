@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0F4C75">
+    <title>Luvfurpaws - Success</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C75',
+                        secondary: '#3282B8',
+                        accent: '#F78D49',
+                        light: '#BBE1FA',
+                        dark: '#0A2D42'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-in-out',
+                        'scale-in': 'scaleIn 0.8s ease-in-out',
+                        'bounce-in': 'bounceIn 1s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.8)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        bounceIn: {
+                            '0%': { transform: 'scale(0.3)', opacity: '0' },
+                            '20%': { transform: 'scale(1.1)' },
+                            '40%': { transform: 'scale(0.9)' },
+                            '60%': { transform: 'scale(1.03)', opacity: '1' },
+                            '80%': { transform: 'scale(0.97)' },
+                            '100%': { transform: 'scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            background-color: #0A2D42;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .app-container {
+            max-width: 500px;
+            margin: 0 auto;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 280px;
+            padding: 14px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 500;
+            background-color: #3282B8;
+            color: white;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+            background-color: #0F4C75;
+        }
+        
+        /* Success check animation */
+        .success-circle {
+            width: 100px;
+            height: 100px;
+            background-color: #F78D49;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(247, 141, 73, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(247, 141, 73, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(247, 141, 73, 0);
+            }
+        }
+        
+        .check-icon {
+            stroke: white;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 80;
+            stroke-dashoffset: 80;
+            animation: draw 1s forwards;
+        }
+        
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        /* Decorative bubbles */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.15;
+            background-color: #3282B8;
+        }
+        
+        .bubble-1 {
+            width: 120px;
+            height: 120px;
+            top: 15%;
+            left: 5%;
+        }
+        
+        .bubble-2 {
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            right: 15%;
+        }
+        
+        .bubble-3 {
+            width: 50px;
+            height: 50px;
+            bottom: 20%;
+            left: 20%;
+        }
+        
+        .bubble-4 {
+            width: 35px;
+            height: 35px;
+            top: 30%;
+            right: 30%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative Bubbles -->
+    <div class="bubble bubble-1"></div>
+    <div class="bubble bubble-2"></div>
+    <div class="bubble bubble-3"></div>
+    <div class="bubble bubble-4"></div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Success Icon -->
+        <div class="success-circle animate-bounce-in">
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="check-icon" d="M5 12L10 17L20 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        
+        <!-- Success Message -->
+        <div class="text-center px-8 animate-fade-in">
+            <h1 class="text-3xl font-bold text-white mb-2">Password Changed Successfully</h1>
+            <p class="text-gray-300 mb-10">You can login using your new password</p>
+            
+            <!-- Details Card - Only shown for certain types of success -->
+            <div class="bg-white/10 rounded-xl p-6 mb-12 text-left backdrop-blur-sm hidden" id="detailsCard">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-white">Date</span>
+                    <span class="text-white font-medium">20 March 2024</span>
+                </div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-white">Time</span>
+                    <span class="text-white font-medium">9:00 AM</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-white">Location</span>
+                    <span class="text-white font-medium text-right">847 B, DDA complex<br>Green Park, New Delhi-110024</span>
+                </div>
+            </div>
+            
+            <button id="doneBtn" class="btn-primary mx-auto">Back to Sign In</button>
+        </div>
+    </div>
+
+    <!-- JavaScript to handle navigation -->
+    <script>
+        // Get DOM elements
+        const doneBtn = document.getElementById('doneBtn');
+        const detailsCard = document.getElementById('detailsCard');
+        
+        // Configure success screen based on the type of confirmation
+        const urlParams = new URLSearchParams(window.location.search);
+        const successType = urlParams.get('type') || 'password'; // Default to password reset success
+        
+        switch(successType) {
+            case 'password':
+                document.querySelector('h1').textContent = 'Password Changed Successfully';
+                document.querySelector('p').textContent = 'You can login using your new password';
+                doneBtn.textContent = 'Back to Sign In';
+                break;
+                
+            case 'booking':
+                document.querySelector('h1').textContent = 'Success';
+                document.querySelector('p').textContent = 'Your appointment is booked with Dr. Anjali Singh';
+                detailsCard.classList.remove('hidden');
+                doneBtn.textContent = 'Done';
+                break;
+                
+            case 'purchase':
+                document.querySelector('h1').textContent = 'Order Placed Successfully';
+                document.querySelector('p').textContent = 'Your order has been confirmed and will be delivered soon.';
+                doneBtn.textContent = 'Continue Shopping';
+                break;
+                
+            case 'registration':
+                document.querySelector('h1').textContent = 'Account Created Successfully';
+                document.querySelector('p').textContent = 'Your Luvfurpaws account has been created. Welcome!';
+                doneBtn.textContent = 'Get Started';
+                break;
+        }
+        
+        // Handle button click
+        doneBtn.addEventListener('click', function() {
+            console.log(`${successType} confirmation completed`);
+            
+            // Navigate to appropriate page based on success type
+            switch(successType) {
+                case 'password':
+                    window.location.href = "email-login.html";
+                    break;
+                    
+                case 'booking':
+                case 'purchase':
+                    window.location.href = "home.html";
+                    break;
+                    
+                case 'registration':
+                    window.location.href = "onboarding.html";
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0F4C75">
+    <title>Luvfurpaws - Services</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Pet care services with Luvfurpaws app">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Luvfurpaws">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C75',
+                        secondary: '#3282B8',
+                        accent: '#F78D49',
+                        light: '#BBE1FA',
+                        dark: '#0A2D42'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .app-container {
+            width: 100%;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            background-color: #f8f8f8;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #777;
+        }
+
+        .bottom-nav-item.active {
+            color: #0F4C75;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        /* Service card animation */
+        .service-card {
+            transition: transform 0.2s ease;
+        }
+        
+        .service-card:active {
+            transform: scale(0.98);
+        }
+        
+        /* Service category selector */
+        .category-button {
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .category-button.active {
+            background-color: #0F4C75;
+            color: white;
+        }
+        
+        /* Notification badge */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #F78D49;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="bg-white px-4 py-3 flex items-center justify-between shadow-sm z-10 sticky top-0">
+            <div class="flex items-center">
+                <button onclick="history.back()" class="mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <h1 class="text-lg font-semibold">Services</h1>
+            </div>
+            
+            <div class="flex items-center">
+                <div class="relative mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                    <div class="notification-badge">2</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="pb-20"> <!-- Added padding to account for bottom nav -->
+            <!-- Search Bar -->
+            <section class="px-4 py-4">
+                <div class="relative">
+                    <input type="text" placeholder="Search services, vets, etc" class="w-full bg-gray-100 text-gray-700 rounded-full py-3 px-6 pr-12 text-sm focus:outline-none">
+                    <button class="absolute right-3 top-2.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Categories Scrollbar -->
+            <section class="px-4 mb-4">
+                <div class="flex overflow-x-auto hide-scrollbar space-x-3 py-2">
+                    <button class="category-button active px-4 py-2 rounded-full text-sm font-medium">
+                        All
+                    </button>
+                    <button class="category-button bg-gray-100 px-4 py-2 rounded-full text-sm font-medium">
+                        Vaccination
+                    </button>
+                    <button class="category-button bg-gray-100 px-4 py-2 rounded-full text-sm font-medium">
+                        Insurance
+                    </button>
+                    <button class="category-button bg-gray-100 px-4 py-2 rounded-full text-sm font-medium">
+                        Grooming
+                    </button>
+                    <button class="category-button bg-gray-100 px-4 py-2 rounded-full text-sm font-medium">
+                        Medicine
+                    </button>
+                    <button class="category-button bg-gray-100 px-4 py-2 rounded-full text-sm font-medium">
+                        Pet Training
+                    </button>
+                </div>
+            </section>
+
+            <!-- Featured Services -->
+            <section class="px-4 mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-lg font-semibold">Featured Services</h2>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <a href="veterinarian-search.html" class="service-card bg-red-400 rounded-lg p-4 flex flex-col h-40">
+                        <div class="flex justify-between mb-2">
+                            <div class="bg-white/20 rounded-lg p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="bg-white/20 rounded-full h-6 w-6 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h3 class="font-semibold text-white">Vaccination</h3>
+                            <p class="text-xs text-white/80 mt-1">Protect your pets</p>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="service-card bg-yellow-400 rounded-lg p-4 flex flex-col h-40">
+                        <div class="flex justify-between mb-2">
+                            <div class="bg-white/20 rounded-lg p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="bg-white/20 rounded-full h-6 w-6 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h3 class="font-semibold text-white">Insurance</h3>
+                            <p class="text-xs text-white/80 mt-1">For unexpected incidents</p>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="service-card bg-secondary rounded-lg p-4 flex flex-col h-40">
+                        <div class="flex justify-between mb-2">
+                            <div class="bg-white/20 rounded-lg p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M8 5a1 1 0 100 2h5.586l-1.293 1.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L13.586 5H8zM12 15a1 1 0 100-2H6.414l1.293-1.293a1 1 0 10-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L6.414 15H12z" />
+                                </svg>
+                            </div>
+                            <div class="bg-white/20 rounded-full h-6 w-6 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h3 class="font-semibold text-white">Grooming</h3>
+                            <p class="text-xs text-white/80 mt-1">Professional pet grooming</p>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="service-card bg-blue-300 rounded-lg p-4 flex flex-col h-40">
+                        <div class="flex justify-between mb-2">
+                            <div class="bg-white/20 rounded-lg p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M7 2a1 1 0 00-.707 1.707L7 4.414v3.758a1 1 0 01-.293.707l-4 4C.817 14.769 2.156 18 4.828 18h10.343c2.673 0 4.012-3.231 2.122-5.121l-4-4A1 1 0 0113 8.172V4.414l.707-.707A1 1 0 0013 2H7zm2 6.172V4h2v4.172a3 3 0 00.879 2.12l1.027 1.028a4 4 0 00-2.171.102l-.47.156a4 4 0 01-2.53 0l-.563-.187a1.993 1.993 0 00-.114-.035l1.063-1.063A3 3 0 009 8.172z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="bg-white/20 rounded-full h-6 w-6 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h3 class="font-semibold text-white">Medicine</h3>
+                            <p class="text-xs text-white/80 mt-1">Delivery to your doorstep</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Special Offers -->
+            <section class="px-4 mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-lg font-semibold">Special Offers</h2>
+                    <a href="#" class="text-sm text-primary">See All</a>
+                </div>
+                
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm mb-4">
+                    <div class="relative">
+                        <div class="h-40 bg-gray-200 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="absolute top-3 left-3 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
+                            20% OFF
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold">Complete Health Check</h3>
+                        <p class="text-xs text-gray-500 mb-2">Full body examination, vaccinations, and more</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-sm line-through text-gray-400">₹1999</span>
+                                <span class="text-sm font-semibold ml-1">₹1599</span>
+                            </div>
+                            <button class="bg-primary text-white text-xs px-3 py-1 rounded-full">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+                    <div class="relative">
+                        <div class="h-40 bg-gray-200 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            NEW
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold">Premium Grooming Package</h3>
+                        <p class="text-xs text-gray-500 mb-2">Bath, haircut, nail trimming, and ear cleaning</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-sm font-semibold">₹899</span>
+                            </div>
+                            <button class="bg-primary text-white text-xs px-3 py-1 rounded-full">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Emergency Services -->
+            <section class="px-4 mb-6">
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <div class="flex items-start">
+                        <div class="bg-red-500 rounded-full p-2 mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-red-600">Emergency Services</h3>
+                            <p class="text-xs text-gray-600 mt-1">24/7 emergency veterinary care available for your pets.</p>
+                            <button class="mt-2 bg-red-500 text-white text-xs px-3 py-1 rounded-full">Call Now</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav shadow-lg">
+            <a href="home-dashboard.html" class="bottom-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="#" class="bottom-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span class="text-xs">Shop</span>
+            </a>
+            <a href="#" class="bottom-nav-item active">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <span class="text-xs">Services</span>
+            </a>
+            <a href="#" class="bottom-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span class="text-xs">Insurance</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- JavaScript for interactions -->
+    <script>
+        // Initialize category selection
+        const categoryButtons = document.querySelectorAll('.category-button');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

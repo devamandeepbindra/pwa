@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Lab Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-6 pb-20">
+        <!-- Header -->
+        <header class="mb-6 flex justify-between items-center">
+            <button class="text-gray-600">
+                <i data-feather="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">Lab Results</h1>
+            <button class="text-gray-600">
+                <i data-feather="upload" class="w-6 h-6"></i>
+            </button>
+        </header>
+
+        <!-- Pet Summary -->
+        <section class="mb-6 bg-white rounded-lg shadow-md p-4 flex items-center">
+            <img src="https://placehold.co/50" alt="Fluffy" class="w-16 h-16 rounded-full mr-4">
+            <div>
+                <h2 class="text-lg font-bold text-gray-800">Fluffy</h2>
+                <p class="text-sm text-gray-500">Golden Retriever | 3 years old</p>
+            </div>
+        </section>
+
+        <!-- Lab Results Overview -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Results Summary</h2>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                    <i data-feather="activity" class="w-8 h-8 mx-auto mb-2 text-blue-600"></i>
+                    <p class="text-xs text-gray-500">Total Tests</p>
+                    <p class="font-semibold text-gray-800">8</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                    <i data-feather="check-circle" class="w-8 h-8 mx-auto mb-2 text-green-600"></i>
+                    <p class="text-xs text-gray-500">Normal</p>
+                    <p class="font-semibold text-green-600">6</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                    <i data-feather="alert-triangle" class="w-8 h-8 mx-auto mb-2 text-red-600"></i>
+                    <p class="text-xs text-gray-500">Abnormal</p>
+                    <p class="font-semibold text-red-600">2</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Lab Results -->
+        <section class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-gray-800">Recent Results</h2>
+                <button class="text-sm text-blue-600 flex items-center">
+                    <i data-feather="download" class="w-4 h-4 mr-1"></i>
+                    Export
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex items-center">
+                            <i data-feather="droplet" class="w-6 h-6 text-blue-600 mr-3"></i>
+                            <h3 class="font-semibold text-gray-800">Blood Panel</h3>
+                        </div>
+                        <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">Normal</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <p class="text-xs text-gray-500">Date</p>
+                            <p class="font-semibold text-gray-800">May 1, 2024</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Ordered By</p>
+                            <p class="text-sm text-gray-700">Dr. Sarah Thompson</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Key Markers</p>
+                            <p class="font-semibold text-gray-800">WBC, RBC, Platelets</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Clinic</p>
+                            <p class="text-sm text-gray-700">PetCare Lab</p>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button class="w-full bg-blue-100 text-blue-700 py-2 rounded-lg text-sm">
+                            View Full Report
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex items-center">
+                            <i data-feather="activity" class="w-6 h-6 text-red-600 mr-3"></i>
+                            <h3 class="font-semibold text-gray-800">Kidney Function Test</h3>
+                        </div>
+                        <span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">Abnormal</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <p class="text-xs text-gray-500">Date</p>
+                            <p class="font-semibold text-gray-800">March 15, 2024</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Ordered By</p>
+                            <p class="text-sm text-gray-700">Dr. Michael Chen</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Key Markers</p>
+                            <p class="font-semibold text-red-600">Creatinine, BUN</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Clinic</p>
+                            <p class="text-sm text-gray-700">City Central Lab</p>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button class="w-full bg-red-100 text-red-700 py-2 rounded-lg text-sm">
+                            Consult Veterinarian
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Analysis -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Detailed Analysis</h2>
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <div class="flex items-center mb-3">
+                    <i data-feather="trending-up" class="w-6 h-6 text-green-600 mr-3"></i>
+                    <h3 class="font-semibold text-gray-800">Blood Panel Trend</h3>
+                </div>
+                <div class="bg-gray-100 rounded-lg p-4 text-center">
+                    <p class="text-sm text-gray-600 mb-2">Visualization of key markers over time</p>
+                    <div class="h-32 flex items-center justify-center text-gray-400">
+                        <i data-feather="bar-chart-2" class="w-16 h-16"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lab Test Recommendations -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Recommendations</h2>
+            <div class="bg-white rounded-lg shadow-md p-4 space-y-3">
+                <div class="flex items-center">
+                    <i data-feather="calendar" class="w-5 h-5 text-blue-600 mr-3"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">Follow-up Test</p>
+                        <p class="text-sm text-gray-500">Recommended in 3 months</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <i data-feather="activity" class="w-5 h-5 text-green-600 mr-3"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">Additional Screening</p>
+                        <p class="text-sm text-gray-500">Discuss with veterinarian</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Request New Test -->
+        <section>
+            <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+                <i data-feather="plus" class="w-5 h-5 mr-2"></i>
+                Request New Lab Test
+            </button>
+        </section>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

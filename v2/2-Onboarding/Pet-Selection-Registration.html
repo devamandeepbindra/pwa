@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0F4C75">
+    <title>Luvfurpaws - Add a Pet</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#237795',
+                        secondary: '#3282B8',
+                        accent: '#F78D49',
+                        light: '#BBE1FA',
+                        dark: '#0A2D42'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-in-out',
+                        'scale-in': 'scaleIn 0.8s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.8)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            background-color: white;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .app-container {
+            max-width: 500px;
+            margin: 0 auto;
+            height: 100vh;
+            position: relative;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 500;
+            background-color: #237795;
+            color: white;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+            background-color: #185e78;
+        }
+        
+        .btn-primary:disabled {
+            background-color: #CBD5E0;
+            cursor: not-allowed;
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: #F3F4F6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: #237795;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        /* Pet Type Selection */
+        .pet-types {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .pet-type {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            border-radius: 16px;
+            background-color: #F3F4F6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 8px;
+        }
+        
+        .pet-type:active {
+            transform: scale(0.95);
+        }
+        
+        .pet-type-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            object-fit: cover;
+            transition: all 0.2s ease;
+        }
+        
+        .pet-type-name {
+            font-size: 14px;
+            color: #4B5563;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .pet-type.selected {
+            background-color: #BBE1FA;
+            border: 2px solid #237795;
+        }
+        
+        .pet-type.selected .pet-type-name {
+            color: #237795;
+            font-weight: 500;
+        }
+        
+        /* Pet Selection/Search field */
+        .search-container {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+            border: 1px solid #E5E7EB;
+            background-color: white;
+            transition: all 0.2s ease;
+            padding-right: 50px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #3282B8;
+            box-shadow: 0 0 0 2px rgba(50, 130, 184, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+        }
+        
+        .filter-icon {
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+        }
+        
+        /* Back button */
+        .back-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f5f5f5;
+            transition: all 0.2s;
+        }
+        
+        .back-button:active {
+            background-color: #e0e0e0;
+        }
+        
+        /* Pet Breed List */
+        .breed-list {
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .breed-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .breed-list::-webkit-scrollbar-track {
+            background: #F3F4F6;
+            border-radius: 2px;
+        }
+        
+        .breed-list::-webkit-scrollbar-thumb {
+            background: #CBD5E0;
+            border-radius: 2px;
+        }
+        
+        .letter-header {
+            font-weight: 700;
+            color: #6B7280;
+            padding: 8px 0;
+            background-color: #F9FAFB;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .breed-item {
+            padding: 14px 0;
+            border-bottom: 1px solid #F3F4F6;
+            font-size: 15px;
+            color: #1F2937;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .breed-item:active {
+            background-color: #F9FAFB;
+        }
+        
+        .breed-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* For screens with onboarding steps */
+        .onboarding-screen {
+            display: none;
+            opacity: 0;
+            transform: translateX(100%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        
+        .onboarding-screen.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* Pet information form fields */
+        .form-input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+            border: 1px solid #E5E7EB;
+            background-color: white;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3282B8;
+            box-shadow: 0 0 0 2px rgba(50, 130, 184, 0.1);
+        }
+        
+        /* Gender selection options */
+        .gender-options {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .gender-option {
+            flex: 1;
+            padding: 12px;
+            border-radius: 50px;
+            text-align: center;
+            border: 1px solid #E5E7EB;
+            color: #4B5563;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .gender-option:active {
+            transform: scale(0.98);
+        }
+        
+        .gender-option.selected {
+            background-color: #BBE1FA;
+            border-color: #3282B8;
+            color: #0F4C75;
+            font-weight: 500;
+        }
+        
+        /* Spayed/Neutered options */
+        .spayed-options {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .spayed-option {
+            flex: 1;
+            padding: 12px;
+            border-radius: 50px;
+            text-align: center;
+            border: 1px solid #E5E7EB;
+            color: #4B5563;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .spayed-option:active {
+            transform: scale(0.98);
+        }
+        
+        .spayed-option.selected {
+            background-color: #BBE1FA;
+            border-color: #3282B8;
+            color: #0F4C75;
+            font-weight: 500;
+        }
+        
+        /* Success animation */
+        .success-animation {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            z-index: 50;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .success-animation.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #10B981;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .checkmark {
+            stroke: white;
+            stroke-width: 3;
+            stroke-dasharray: 40;
+            stroke-dashoffset: 40;
+            animation: draw 0.8s forwards 0.3s;
+        }
+        
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        .textfield-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4B5563;
+            margin-bottom: 8px;
+        }
+        
+        /* Keyboard for mobile (visual only) */
+        .keyboard {
+            display: none; /* Hidden by default, will be shown on input focus */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #1F2937;
+            padding: 8px 4px;
+            z-index: 30;
+        }
+        
+        .keyboard-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .key {
+            color: white;
+            text-align: center;
+            padding: 8px 4px;
+            font-size: 14px;
+        }
+        
+        /* Pet photo container */
+        .pet-photo-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #F3F4F6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 24px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .pet-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .add-photo-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            background-color: #0F4C75;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border: 3px solid white;
+        }
+        
+        /* Dropdown select styles */
+        .select-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        
+        .select-container select {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+            border: 1px solid #E5E7EB;
+            background-color: white;
+            transition: all 0.2s ease;
+            appearance: none;
+        }
+        
+        .select-container select:focus {
+            outline: none;
+            border-color: #3282B8;
+            box-shadow: 0 0 0 2px rgba(50, 130, 184, 0.1);
+        }
+        
+        .select-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Pet Type Selection Screen -->
+        <div class="onboarding-screen active" id="petTypeScreen">
+            <!-- Header with Back Button and Title -->
+            <div class="flex items-center p-4 animate-fade-in">
+                <button class="back-button mr-4" onclick="history.back()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                
+                <h1 class="text-xl font-bold text-dark">Add a Pet</h1>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="flex-1 flex flex-col px-6 pt-2 pb-6 animate-slide-up">
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 33%;"></div>
+                </div>
+                
+                <h2 class="text-lg font-semibold mb-4">Which Pet You Have?</h2>
+                
+                <!-- Pet Type Selection -->
+                <div class="pet-types">
+                    <div class="pet-type selected" data-type="dog" onclick="selectPetType(this, 'dog')">
+                        <img src="https://placehold.co/200/3282B8/FFFFFF?text=Dog" alt="Dog" class="pet-type-img">
+                        <span class="pet-type-name">Dog</span>
+                    </div>
+                    <div class="pet-type" data-type="cat" onclick="selectPetType(this, 'cat')">
+                        <img src="https://placehold.co/200/3282B8/FFFFFF?text=Cat" alt="Cat" class="pet-type-img">
+                        <span class="pet-type-name">Cat</span>
+                    </div>
+                    <div class="pet-type" data-type="rabbit" onclick="selectPetType(this, 'rabbit')">
+                        <img src="https://placehold.co/200/3282B8/FFFFFF?text=Rabbit" alt="Rabbit" class="pet-type-img">
+                        <span class="pet-type-name">Rabbit</span>
+                    </div>
+                    <div class="pet-type" data-type="parrot" onclick="selectPetType(this, 'parrot')">
+                        <img src="https://placehold.co/200/3282B8/FFFFFF?text=Parrot" alt="Parrot" class="pet-type-img">
+                        <span class="pet-type-name">Parrot</span>
+                    </div>
+                    <div class="pet-type" data-type="other" onclick="selectPetType(this, 'other')">
+                        <img src="https://placehold.co/200/3282B8/FFFFFF?text=Other" alt="Other" class="pet-type-img">
+                        <span class="pet-type-name">Other</span>
+                    </div>
+                </div>
+                
+                <!-- Pet Name Input -->
+                <div class="mb-4">
+                    <input type="text" id="petNameInput" placeholder="Enter your pet name" class="form-input" />
+                </div>
+                
+                <button id="continueToBreedBtn" class="btn-primary" onclick="goToBreedScreen()">Continue</button>
+            </div>
+        </div>
+        
+        <!-- Pet Breed Selection Screen -->
+        <div class="onboarding-screen" id="breedScreen">
+            <!-- Header with Back Button and Title -->
+            <div class="flex items-center p-4">
+                <button class="back-button mr-4" onclick="goBackToPetTypeScreen()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                
+                <h1 class="text-xl font-bold text-dark">Choose Breed</h1>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="flex-1 flex flex-col px-6 pt-2 pb-6">
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 66%;"></div>
+                </div>
+                
+                <!-- Search Field -->
+                <div class="search-container">
+                    <input type="text" id="breedSearch" placeholder="Search your pet breed" class="search-input" oninput="filterBreeds(this.value)" />
+                    <div class="filter-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                        </svg>
+                    </div>
+                    <div class="search-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Breed List -->
+                <div class="breed-list" id="breedList">
+                    <div class="letter-header">A</div>
+                    <div class="breed-item" onclick="selectBreed('Affenpinscher')">Affenpinscher</div>
+                    <div class="breed-item" onclick="selectBreed('Afghan Hound')">Afghan Hound</div>
+                    <div class="breed-item" onclick="selectBreed('Airedale Terrier')">Airedale Terrier</div>
+                    <div class="breed-item" onclick="selectBreed('Akita')">Akita</div>
+                    
+                    <div class="letter-header">B</div>
+                    <div class="breed-item" onclick="selectBreed('Basenji')">Basenji</div>
+                    <div class="breed-item" onclick="selectBreed('Beagle')">Beagle</div>
+                    <div class="breed-item" onclick="selectBreed('Bearded Collie')">Bearded Collie</div>
+                    <div class="breed-item" onclick="selectBreed('Bichon Frise')">Bichon Frise</div>
+                    
+                    <div class="letter-header">C</div>
+                    <div class="breed-item" onclick="selectBreed('Chihuahua')">Chihuahua</div>
+                    <div class="breed-item" onclick="selectBreed('Cocker Spaniel')">Cocker Spaniel</div>
+                    <div class="breed-item" onclick="selectBreed('Collie')">Collie</div>
+                    <div class="breed-item" onclick="selectBreed('Corgi')">Corgi</div>
+                    
+                    <div class="letter-header">G</div>
+                    <div class="breed-item" onclick="selectBreed('German Shepherd')">German Shepherd</div>
+                    <div class="breed-item" onclick="selectBreed('Golden Retriever')">Golden Retriever</div>
+                    <div class="breed-item" onclick="selectBreed('Great Dane')">Great Dane</div>
+                    
+                    <div class="letter-header">L</div>
+                    <div class="breed-item" onclick="selectBreed('Labrador Retriever')">Labrador Retriever</div>
+                </div>
+                
+                <!-- Custom Breed Input (initially hidden) -->
+                <div id="customBreedContainer" class="mb-4 hidden">
+                    <input type="text" id="customBreedInput" placeholder="Enter breed name" class="form-input" />
+                </div>
+                
+                <button id="continueToDetailsBtn" class="btn-primary" onclick="goToDetailsScreen()">Continue</button>
+            </div>
+        </div>
+        
+        <!-- Pet Details Screen -->
+        <div class="onboarding-screen" id="detailsScreen">
+            <!-- Header with Back Button and Title -->
+            <div class="flex items-center p-4">
+                <button class="back-button mr-4" onclick="goBackToBreedScreen()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                
+                <h1 class="text-xl font-bold text-dark">Fill Basic Information</h1>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="flex-1 flex flex-col px-6 pt-2 pb-6">
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 100%;"></div>
+                </div>
+                
+                <!-- Pet Photo Upload -->
+                <div class="pet-photo-container">
+                    <img src="https://placehold.co/400/CCCCCC/666666?text=Pet" alt="Pet Photo" class="pet-photo" id="petPhotoPreview" />
+                    <div class="add-photo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Pet Details Form -->
+                <div class="textfield-label">Birthdate</div>
+                <input type="date" id="birthDateInput" class="form-input" />
+                
+                <div class="textfield-label">Weight</div>
+                <div class="flex items-center gap-3 mb-4">
+                    <input type="number" id="weightInput" placeholder="Weight" class="form-input mb-0 flex-1" />
+                    <div class="select-container" style="width: 80px; margin-bottom: 0;">
+                        <select id="weightUnit" class="px-3 py-4">
+                            <option value="kg">kg</option>
+                            <option value="lb">lb</option>
+                        </select>
+                        <div class="select-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="textfield-label">Color</div>
+                <input type="text" id="colorInput" placeholder="Color" class="form-input" />
+                
+                <div class="textfield-label">Gender</div>
+                <div class="gender-options">
+                    <div class="gender-option" onclick="selectGender('female')">Female</div>
+                    <div class="gender-option" onclick="selectGender('male')">Male</div>
+                    <div class="gender-option" onclick="selectGender('unknown')">Unknown</div>
+                </div>
+                
+                <div class="textfield-label">Spayed Or Neutered</div>
+                <div class="spayed-options">
+                    <div class="spayed-option" onclick="selectSpayedStatus('yes')">Yes</div>
+                    <div class="spayed-option" onclick="selectSpayedStatus('no')">No</div>
+                    <div class="spayed-option" onclick="selectSpayedStatus('unknown')">Unknown</div>
+                </div>
+                
+                <div class="textfield-label">About Pet</div>
+                <textarea id="aboutPetInput" placeholder="Write a description about pet" class="form-input" style="height: 100px; resize: none; border-radius: 20px;"></textarea>
+                
+                <button id="savePetBtn" class="btn-primary mt-4" onclick="savePet()">Continue</button>
+            </div>
+        </div>
+        
+        <!-- Success Animation (hidden initially) -->
+        <div class="success-animation" id="successAnimation">
+            <div class="success-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path class="checkmark" d="M5 13l4 4L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-dark mb-2">Success!</h2>
+            <p class="text-gray-600 mb-8">Your pet was successfully created.</p>
+            <button class="btn-primary" style="max-width: 200px;" onclick="finishOnboarding()">Done</button>
+        </div>
+    </div>
+</body>
+</html>

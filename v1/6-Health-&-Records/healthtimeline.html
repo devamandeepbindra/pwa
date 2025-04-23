@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Health Timeline</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-6 pb-20">
+        <!-- Header -->
+        <header class="mb-6 flex justify-between items-center">
+            <button class="text-gray-600">
+                <i data-feather="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">Health Timeline</h1>
+            <button class="text-gray-600">
+                <i data-feather="plus" class="w-6 h-6"></i>
+            </button>
+        </header>
+
+        <!-- Pet Summary -->
+        <section class="mb-6 bg-white rounded-lg shadow-md p-4 flex items-center">
+            <img src="https://placehold.co/50" alt="Fluffy" class="w-16 h-16 rounded-full mr-4">
+            <div>
+                <h2 class="text-lg font-bold text-gray-800">Fluffy</h2>
+                <p class="text-sm text-gray-500">Golden Retriever | 3 years old</p>
+            </div>
+        </section>
+
+        <!-- Health Overview -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Health Summary</h2>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                    <i data-feather="activity" class="w-8 h-8 mx-auto mb-2 text-blue-600"></i>
+                    <p class="text-xs text-gray-500">Weight</p>
+                    <p class="font-semibold text-gray-800">25 kg</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                    <i data-feather="heart" class="w-8 h-8 mx-auto mb-2 text-green-600"></i>
+                    <p class="text-xs text-gray-500">Overall Health</p>
+                    <p class="font-semibold text-green-600">Good</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                    <i data-feather="calendar" class="w-8 h-8 mx-auto mb-2 text-purple-600"></i>
+                    <p class="text-xs text-gray-500">Last Check-up</p>
+                    <p class="font-semibold text-gray-800">May 1, 2024</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Health Timeline -->
+        <section class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-gray-800">Medical History</h2>
+                <button class="text-sm text-blue-600 flex items-center">
+                    <i data-feather="download" class="w-4 h-4 mr-1"></i>
+                    Export
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <!-- 2024 Entries -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex items-center mb-3">
+                        <div class="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
+                        <h3 class="font-semibold text-gray-800">Annual Health Check-up</h3>
+                    </div>
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Dr. Sarah Thompson</p>
+                            <p class="text-xs text-gray-500">Comprehensive Physical Exam</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-700">May 1, 2024</p>
+                            <p class="text-xs text-green-600">Completed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex items-center mb-3">
+                        <div class="w-2 h-2 bg-green-600 rounded-full mr-3"></div>
+                        <h3 class="font-semibold text-gray-800">Vaccination Update</h3>
+                    </div>
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Dr. Michael Chen</p>
+                            <p class="text-xs text-gray-500">DHPP and Rabies Vaccine</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-700">March 15, 2024</p>
+                            <p class="text-xs text-green-600">Completed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2023 Entries -->
+                <div class="relative mb-4">
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center">
+                        <span class="bg-gray-100 px-3 text-sm text-gray-500">2023</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex items-center mb-3">
+                        <div class="w-2 h-2 bg-purple-600 rounded-full mr-3"></div>
+                        <h3 class="font-semibold text-gray-800">Dental Cleaning</h3>
+                    </div>
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Dr. Emily Rodriguez</p>
+                            <p class="text-xs text-gray-500">Professional Teeth Scaling</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-700">November 20, 2023</p>
+                            <p class="text-xs text-green-600">Completed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex items-center mb-3">
+                        <div class="w-2 h-2 bg-red-600 rounded-full mr-3"></div>
+                        <h3 class="font-semibold text-gray-800">Minor Injury Treatment</h3>
+                    </div>
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Emergency Vet Clinic</p>
+                            <p class="text-xs text-gray-500">Paw Wound Treatment</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-700">July 5, 2023</p>
+                            <p class="text-xs text-green-600">Completed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Health Reminders -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Upcoming Reminders</h2>
+            <div class="bg-white rounded-lg shadow-md p-4 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i data-feather="bell" class="w-5 h-5 text-blue-600 mr-3"></i>
+                        <div>
+                            <p class="font-semibold text-gray-800">Booster Shots</p>
+                            <p class="text-sm text-gray-500">Annual Vaccination</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-blue-600">June 15, 2024</p>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i data-feather="calendar" class="w-5 h-5 text-green-600 mr-3"></i>
+                        <div>
+                            <p class="font-semibold text-gray-800">Weight Check</p>
+                            <p class="text-sm text-gray-500">Routine Health Monitoring</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-green-600">July 1, 2024</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add Health Record Button -->
+        <section>
+            <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+                <i data-feather="plus" class="w-5 h-5 mr-2"></i>
+                Add Health Record
+            </button>
+        </section>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

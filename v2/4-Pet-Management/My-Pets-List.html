@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0F4C75">
+    <title>Luvfurpaws - My Pets</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Manage your pets with the Luvfurpaws app">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Luvfurpaws">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C75',
+                        secondary: '#3282B8',
+                        accent: '#F78D49',
+                        light: '#BBE1FA',
+                        dark: '#0A2D42'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .app-container {
+            width: 100%;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            background-color: #f8f8f8;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #777;
+        }
+
+        .bottom-nav-item.active {
+            color: #0F4C75;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        .pet-card {
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .pet-card:active {
+            transform: scale(0.98);
+        }
+        
+        .floating-button {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: #0F4C75;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 50;
+        }
+        
+        .floating-button:active {
+            transform: scale(0.95);
+        }
+        
+        /* Pulse animation for the add button */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(15, 76, 117, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(15, 76, 117, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(15, 76, 117, 0);
+            }
+        }
+        
+        .pet-icon {
+            width: 60px;
+            height: 60px;
+            opacity: 0.15;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="bg-white px-4 py-3 flex items-center shadow-sm z-10 sticky top-0">
+            <button class="mr-2" onclick="history.back()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <h1 class="text-lg font-semibold">My Pets</h1>
+        </header>
+
+        <!-- Main Content -->
+        <main class="pb-20 p-4">
+            <!-- Pet Cards -->
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Pet Card 1 -->
+                <div class="pet-card bg-white rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-gray-100 h-40 relative flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="pet-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold">Citty</h3>
+                        <p class="text-xs text-gray-500">6 year | Siamese cat</p>
+                    </div>
+                </div>
+                
+                <!-- Pet Card 2 -->
+                <div class="pet-card bg-white rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-gray-100 h-40 relative flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="pet-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold">Doggy</h3>
+                        <p class="text-xs text-gray-500">6 year | German Shep...</p>
+                    </div>
+                </div>
+                
+                <!-- Pet Card 3 -->
+                <div class="pet-card bg-white rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-gray-100 h-40 relative flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="pet-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold">Lio</h3>
+                        <p class="text-xs text-gray-500">6 year | German Shep...</p>
+                    </div>
+                </div>
+                
+                <!-- Pet Card 4 -->
+                <div class="pet-card bg-white rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-gray-100 h-40 relative flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="pet-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold">Miky</h3>
+                        <p class="text-xs text-gray-500">6 year | Siamese cat</p>
+                    </div>
+                </div>
+                
+                <!-- Pet Card 5 -->
+                <div class="pet-card bg-white rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-gray-100 h-40 relative flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="pet-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold">Mily</h3>
+                        <p class="text-xs text-gray-500">6 year | Siamese cat</p>
+                    </div>
+                </div>
+                
+                <!-- Pet Card 6 -->
+                <div class="pet-card bg-white rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-gray-100 h-40 relative flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="pet-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold">Woof</h3>
+                        <p class="text-xs text-gray-500">6 year | German Shep...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Floating Action Button to Add Pet -->
+        <a href="#" class="floating-button pulse">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+        </a>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav shadow-lg">
+            <a href="#" class="bottom-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="#" class="bottom-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span class="text-xs">Shop</span>
+            </a>
+            <a href="#" class="bottom-nav-item active">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <span class="text-xs">My Pet</span>
+            </a>
+            <a href="#" class="bottom-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span class="text-xs">Insurance</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- JavaScript for interactions -->
+    <script>
+        // Make pet cards clickable
+        document.querySelectorAll('.pet-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Navigate to pet details page (placeholder)
+                console.log('Navigating to pet details page');
+                // window.location.href = '/pet-details.html';
+            });
+        });
+        
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                }).catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

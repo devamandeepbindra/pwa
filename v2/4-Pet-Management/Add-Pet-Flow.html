@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0F4C75">
+    <title>Luvfurpaws - Add a Pet</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Add a new pet to your Luvfurpaws account">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Luvfurpaws">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C75',
+                        secondary: '#3282B8',
+                        accent: '#F78D49',
+                        light: '#BBE1FA',
+                        dark: '#0A2D42'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .app-container {
+            width: 100%;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            background-color: #f8f8f8;
+        }
+
+        /* Progress indicator styles */
+        .progress-container {
+            display: flex;
+            margin: 0 auto;
+            width: 80%;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .progress-container::before {
+            content: '';
+            position: absolute;
+            background-color: #E5E7EB;
+            height: 4px;
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            background-color: #3282B8;
+            height: 4px;
+            width: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            transition: width 0.3s ease;
+        }
+        
+        .step {
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .step.active {
+            border-color: #3282B8;
+            background-color: #3282B8;
+            color: white;
+        }
+        
+        .step.completed {
+            border-color: #3282B8;
+            background-color: #3282B8;
+            color: white;
+        }
+        
+        /* Pet type selection */
+        .pet-type-item {
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .pet-type-item.selected {
+            border-color: #3282B8;
+            background-color: #F0F9FF;
+        }
+        
+        /* Form input styling */
+        .input-field {
+            width: 100%;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 16px;
+            transition: border-color 0.2s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #3282B8;
+            box-shadow: 0 0 0 2px rgba(50, 130, 184, 0.1);
+        }
+        
+        /* Radio button styling */
+        .radio-container {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .radio-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #E5E7EB;
+            border-radius: 50px;
+            padding: 8px 20px;
+            transition: all 0.2s ease;
+        }
+        
+        .radio-item.selected {
+            background-color: #3282B8;
+            border-color: #3282B8;
+            color: white;
+        }
+        
+        /* Button styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary {
+            background-color: #0F4C75;
+            color: white;
+        }
+        
+        .btn-primary:active {
+            background-color: #0A3A5A;
+        }
+        
+        .btn-outline {
+            border: 1px solid #0F4C75;
+            color: #0F4C75;
+            background-color: transparent;
+        }
+        
+        .btn-outline:active {
+            background-color: #F0F9FF;
+        }
+        
+        /* Animation for step transitions */
+        .step-content {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .step-content.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Success animation */
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+            animation: scale-in 0.3s ease;
+        }
+        
+        @keyframes scale-in {
+            0% {
+                transform: scale(0);
+            }
+            80% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .success-checkmark svg {
+            animation: check-in 0.3s ease 0.2s forwards;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        
+        @keyframes check-in {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="bg-white px-4 py-3 flex items-center shadow-sm z-10 sticky top-0">
+            <button class="mr-2" onclick="history.back()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <h1 class="text-lg font-semibold">Add a Pet</h1>
+        </header>
+
+        <!-- Progress Indicator -->
+        <div class="py-6 bg-white border-b border-gray-200">
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="step active" id="step1">1</div>
+                <div class="step" id="step2">2</div>
+                <div class="step" id="step3">3</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="p-4">
+            <!-- Step 1: Choose Pet Type -->
+            <div class="step-content active" id="stepContent1">
+                <h2 class="text-xl font-semibold mb-6">Which Pet You Have?</h2>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="pet-type-item bg-white rounded-lg flex flex-col items-center p-4" data-pet-type="dog">
+                        <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">Dog</span>
+                    </div>
+                    
+                    <div class="pet-type-item bg-white rounded-lg flex flex-col items-center p-4" data-pet-type="cat">
+                        <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">Cat</span>
+                    </div>
+                    
+                    <div class="pet-type-item bg-white rounded-lg flex flex-col items-center p-4" data-pet-type="rabbit">
+                        <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">Rabbit</span>
+                    </div>
+                    
+                    <div class="pet-type-item bg-white rounded-lg flex flex-col items-center p-4" data-pet-type="parrot">
+                        <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.790l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1z" />
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">Parrot</span>
+                    </div>
+                    
+                    <div class="pet-type-item bg-white rounded-lg flex flex-col items-center p-4" data-pet-type="other">
+                        <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">Other</span>
+                    </div>
+                    
+                    <!-- Pet Type Input for "Other" -->
+                    <div class="col-span-2 mt-2 hidden" id="otherPetTypeContainer">
+                        <input type="text" class="input-field" placeholder="Enter your pet type" id="otherPetTypeInput">
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary w-full" id="nextToStep2" disabled>Continue</button>
+            </div>
+            
+            <!-- Step 2: Basic Information -->
+            <div class="step-content hidden" id="stepContent2">
+                <h2 class="text-xl font-semibold mb-6">Fill Basic Information</h2>
+                
+                <div class="bg-white rounded-lg p-6 mb-6">
+                    <div class="mb-6 flex flex-col items-center">
+                        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-2 relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                            </svg>
+                            <button class="absolute bottom-0 right-0 bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center shadow-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Pet Name</label>
+                            <input type="text" class="input-field" placeholder="Enter your pet's name" id="petNameInput">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
+                            <input type="number" class="input-field" placeholder="Enter weight in kg" id="petWeightInput">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Color</label>
+                            <input type="text" class="input-field" placeholder="Enter color" id="petColorInput">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Birthdate</label>
+                            <input type="date" class="input-field" id="petBirthdateInput">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                            <div class="radio-container">
+                                <div class="radio-item selected" data-gender="female">Female</div>
+                                <div class="radio-item" data-gender="male">Male</div>
+                                <div class="radio-item" data-gender="unknown">Unknown</div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Spayed or Neutered</label>
+                            <div class="radio-container">
+                                <div class="radio-item" data-neutered="yes">Yes</div>
+                                <div class="radio-item selected" data-neutered="no">No</div>
+                                <div class="radio-item" data-neutered="unknown">Unknown</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button class="btn btn-outline flex-1" id="backToStep1">Back</button>
+                    <button class="btn btn-primary flex-1" id="nextToStep3">Continue</button>
+                </div>
+            </div>
+            
+            <!-- Step 3: Choose Breed -->
+            <div class="step-content hidden" id="stepContent3">
+                <h2 class="text-xl font-semibold mb-6">Choose Breed</h2>
+                
+                <div class="bg-white rounded-lg p-4 mb-6">
+                    <div class="relative mb-6">
+                        <input type="text" class="input-field pr-10" placeholder="Search your pet breed" id="breedSearchInput">
+                        <div class="absolute right-3 top-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="divide-y divide-gray-100">
+                        <div class="py-2 text-sm font-medium text-gray-500">A</div>
+                        
+                        <div class="py-3">
+                            <div class="breed-item" data-breed="Affenpinscher">Affenpinscher</div>
+                        </div>
+                        
+                        <div class="py-3">
+                            <div class="breed-item" data-breed="Afghan Hound">Afghan Hound</div>
+                        </div>
+                        
+                        <div class="py-3">
+                            <div class="breed-item" data-breed="Aidi">Aidi</div>
+                        </div>
+                        
+                        <div class="py-3">
+                            <div class="breed-item" data-breed="Ainu dog">Ainu dog</div>
+                        </div>
+                        
+                        <div class="py-3">
+                            <div class="breed-item" data-breed="Akita">Akita</div>
+                        </div>
+                        
+                        <div class="py-2 text-sm font-medium text-gray-500">B</div>
+                        
+                        <div class="py-3">
+                            <div class="breed-item" data-breed="Bagel">Bagel</div>
+                        </div>
+                        
+                        <div class="py-3">
+                            <div class="breed-item" data-breed="Balkanski Gonic">Balkanski Gonic</div>
+                        </div>
+                        
+                        <div class="py-3">
+                            <div class="breed-item" data-breed="Barbet">Barbet</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button class="btn btn-outline flex-1" id="backToStep2">Back</button>
+                    <button class="btn btn-primary flex-1" id="finishProcess">Done</button>
+                </div>
+            </div>
+            
+            <!-- Success Screen -->
+            <div class="step-content hidden" id="successScreen">
+                <div class="py-8 flex flex-col items-center justify-center text-center">
+                    <div class="success-checkmark mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-bold mb-2">Success!</h2>
+                    <p class="text-gray-600 mb-8">Your pet was successfully created.</p>
+                    <button class="btn btn-primary" id="exitButton">Exit</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript for interactions -->
+    <script>
+        // Progress bar and steps functionality
+        const progressBar = document.getElementById('progressBar');
+        const steps = document.querySelectorAll('.step');
+        const stepContents = document.querySelectorAll('.step-content');
+        
+        // Step 1 elements
+        const petTypeItems = document.querySelectorAll('.pet-type-item');
+        const nextToStep2Button = document.getElementById('nextToStep2');
+        const otherPetTypeContainer = document.getElementById('otherPetTypeContainer');
+        const otherPetTypeInput = document.getElementById('otherPetTypeInput');
+        
+        // Step 2 elements
+        const petNameInput = document.getElementById('petNameInput');
+        const backToStep1Button = document.getElementById('backToStep1');
+        const nextToStep3Button = document.getElementById('nextToStep3');
+        const genderOptions = document.querySelectorAll('[data-gender]');
+        const neuteredOptions = document.querySelectorAll('[data-neutered]');
+        
+        // Step 3 elements
+        const backToStep2Button = document.getElementById('backToStep2');
+        const finishProcessButton = document.getElementById('finishProcess');
+        const breedItems = document.querySelectorAll('.breed-item');
+        const breedSearchInput = document.getElementById('breedSearchInput');
+        
+        // Success screen
+        const exitButton = document.getElementById('exitButton');
+        
+        // Function to update progress bar
+        function updateProgressBar(step) {
+            let percent = 0;
+            
+            switch(step) {
+                case 1:
+                    percent = 0;
+                    break;
+                case 2:
+                    percent = 50;
+                    break;
+                case 3:
+                    percent = 100;
+                    break;
+            }
+            
+            progressBar.style.width = `${percent}%`;
+            
+            // Update step indicators
+            steps.forEach((stepEl, idx) => {
+                if (idx + 1 < step) {
+                    stepEl.classList.remove('active');
+                    stepEl.classList.add('completed');
+                    stepEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>';
+                } else if (idx + 1 === step) {
+                    stepEl.classList.add('active');
+                    stepEl.classList.remove('completed');
+                    stepEl.innerHTML = idx + 1;
+                } else {
+                    stepEl.classList.remove('active', 'completed');
+                    stepEl.innerHTML = idx + 1;
+                }
+            });
+        }
+        
+        // Function to show a specific step
+        function showStep(stepNumber) {
+            stepContents.forEach((content, idx) => {
+                if (idx + 1 === stepNumber) {
+                    content.classList.add('active');
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.remove('active');
+                    content.classList.add('hidden');
+                }
+            });
+            
+            updateProgressBar(stepNumber);
+        }
+        
+        // Step 1: Pet Type Selection
+        petTypeItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove selection from all items
+                petTypeItems.forEach(el => el.classList.remove('selected'));
+                
+                // Add selection to clicked item
+                this.classList.add('selected');
+                
+                // Enable the next button
+                nextToStep2Button.disabled = false;
+                
+                // Show/hide other pet type input
+                if (this.dataset.petType === 'other') {
+                    otherPetTypeContainer.classList.remove('hidden');
+                } else {
+                    otherPetTypeContainer.classList.add('hidden');
+                }
+            });
+        });
+        
+        // Step 1 -> Step 2
+        nextToStep2Button.addEventListener('click', function() {
+            showStep(2);
+        });
+        
+        // Step 2 -> Step 1
+        backToStep1Button.addEventListener('click', function() {
+            showStep(1);
+        });
+        
+        // Step 2 -> Step 3
+        nextToStep3Button.addEventListener('click', function() {
+            showStep(3);
+        });
+        
+        // Step 3 -> Step 2
+        backToStep2Button.addEventListener('click', function() {
+            showStep(2);
+        });
+        
+        // Gender selection
+        genderOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                genderOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        // Neutered selection
+        neuteredOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                neuteredOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        // Breed selection
+        breedItems.forEach(item => {
+            item.addEventListener('click', function() {
+                breedItems.forEach(el => el.style.fontWeight = 'normal');
+                this.style.fontWeight = 'bold';
+            });
+        });
+        
+        // Breed search functionality (simple implementation)
+        breedSearchInput.addEventListener('input', function() {
+            const searchValue = this.value.toLowerCase();
+            const breedItems = document.querySelectorAll('.breed-item');
+            
+            breedItems.forEach(item => {
+                const breedName = item.dataset.breed.toLowerCase();
+                const parentDiv = item.parentElement;
+                
+                if (breedName.includes(searchValue)) {
+                    parentDiv.classList.remove('hidden');
+                } else {
+                    parentDiv.classList.add('hidden');
+                }
+            });
+            
+            // Hide category headers if all breeds in that category are hidden
+            const headers = document.querySelectorAll('.text-sm.font-medium.text-gray-500');
+            headers.forEach(header => {
+                let nextEl = header.nextElementSibling;
+                let allHidden = true;
+                
+                while (nextEl && !nextEl.classList.contains('text-sm', 'font-medium', 'text-gray-500')) {
+                    if (!nextEl.classList.contains('hidden')) {
+                        allHidden = false;
+                        break;
+                    }
+                    nextEl = nextEl.nextElementSibling;
+                }
+                
+                if (allHidden) {
+                    header.classList.add('hidden');
+                } else {
+                    header.classList.remove('hidden');
+                }
+            });
+        });
+        
+        // Finish process and show success screen
+        finishProcessButton.addEventListener('click', function() {
+            // Here you would typically save the pet data to your database
+            // For this example, we'll just show the success screen
+            stepContents.forEach(content => {
+                content.classList.remove('active');
+                content.classList.add('hidden');
+            });
+            
+            document.getElementById('successScreen').classList.remove('hidden');
+            document.getElementById('successScreen').classList.add('active');
+            
+            // Hide progress indicator
+            document.querySelector('.progress-container').style.display = 'none';
+        });
+        
+        // Exit button returns to pet list
+        exitButton.addEventListener('click', function() {
+            // Navigate back to pet list page
+            window.location.href = '/pets-list.html';
+        });
+        
+        // Form validation for step 2
+        const requiredInputs = [petNameInput];
+        
+        function validateStep2() {
+            let valid = true;
+            
+            requiredInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    valid = false;
+                    input.classList.add('border-red-500');
+                } else {
+                    input.classList.remove('border-red-500');
+                }
+            });
+            
+            return valid;
+        }
+        
+        nextToStep3Button.addEventListener('click', function(e) {
+            if (!validateStep2()) {
+                e.preventDefault();
+                alert('Please fill in all required fields');
+                return false;
+            }
+            
+            showStep(3);
+        });
+        
+        // Add input validation listeners
+        requiredInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.remove('border-red-500');
+                } else {
+                    this.classList.add('border-red-500');
+                }
+            });
+        });
+        
+        // Initialize the first step
+        showStep(1);
+        
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                }).catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

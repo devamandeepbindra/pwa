@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0F4C75">
+    <title>Luvfurpaws - Appointment Booking</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Book appointments for your pets with Luvfurpaws">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Luvfurpaws">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C75',
+                        secondary: '#3282B8',
+                        accent: '#F78D49',
+                        light: '#BBE1FA',
+                        dark: '#0A2D42'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .app-container {
+            width: 100%;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            background-color: #f8f8f8;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        /* Date selector */
+        .date-picker-day {
+            width: 40px;
+            height: 56px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .date-picker-day.selected {
+            background-color: #0F4C75;
+            color: white;
+        }
+        
+        /* Time slot selector */
+        .time-slot {
+            transition: all 0.2s ease;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .time-slot.selected {
+            background-color: #0F4C75;
+            color: white;
+            border-color: #0F4C75;
+        }
+        
+        /* Pet selector */
+        .pet-card {
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        
+        .pet-card.selected {
+            border-color: #0F4C75;
+            background-color: #f0f7ff;
+        }
+        
+        /* Animation for the confirmation button */
+        .confirm-button {
+            transition: transform 0.2s ease;
+        }
+        
+        .confirm-button:active {
+            transform: scale(0.98);
+        }
+        
+        /* Checkbox custom style */
+        .custom-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            outline: none;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .custom-checkbox:checked {
+            background-color: #0F4C75;
+            border-color: #0F4C75;
+        }
+        
+        .custom-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 6px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="bg-white px-4 py-3 flex items-center justify-between shadow-sm z-10 sticky top-0">
+            <div class="flex items-center">
+                <button onclick="history.back()" class="mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <h1 class="text-lg font-semibold">Book Appointment</h1>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="pb-6">
+            <!-- Provider Info -->
+            <section class="px-4 py-4">
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <div class="flex items-center">
+                        <div class="bg-secondary h-12 w-12 rounded-lg flex items-center justify-center text-white mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-semibold">Dr. Made Yogi</h2>
+                            <p class="text-xs text-gray-500">Veterinarian | Dermatology</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Date Selection -->
+            <section class="px-4 mb-4">
+                <h3 class="text-sm font-semibold mb-2">Select Date</h3>
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span class="text-sm font-medium">March 2024</span>
+                        </div>
+                        <div class="flex">
+                            <button class="p-1 rounded-full bg-gray-100 mr-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <button class="p-1 rounded-full bg-gray-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex overflow-x-auto hide-scrollbar space-x-2 pb-2">
+                        <div class="date-picker-day">
+                            <p class="text-xs">Mon</p>
+                            <p class="font-semibold">22</p>
+                        </div>
+                        <div class="date-picker-day selected">
+                            <p class="text-xs">Tue</p>
+                            <p class="font-semibold">23</p>
+                        </div>
+                        <div class="date-picker-day">
+                            <p class="text-xs">Wed</p>
+                            <p class="font-semibold">24</p>
+                        </div>
+                        <div class="date-picker-day">
+                            <p class="text-xs">Thu</p>
+                            <p class="font-semibold">25</p>
+                        </div>
+                        <div class="date-picker-day">
+                            <p class="text-xs">Fri</p>
+                            <p class="font-semibold">26</p>
+                        </div>
+                        <div class="date-picker-day">
+                            <p class="text-xs">Sat</p>
+                            <p class="font-semibold">27</p>
+                        </div>
+                        <div class="date-picker-day">
+                            <p class="text-xs">Sun</p>
+                            <p class="font-semibold">28</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Time Selection -->
+            <section class="px-4 mb-4">
+                <h3 class="text-sm font-semibold mb-2">Select Time</h3>
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="time-slot rounded-md py-2 px-1 text-center">
+                            <p class="text-xs">9:00 AM</p>
+                        </div>
+                        <div class="time-slot selected rounded-md py-2 px-1 text-center">
+                            <p class="text-xs">10:00 AM</p>
+                        </div>
+                        <div class="time-slot rounded-md py-2 px-1 text-center">
+                            <p class="text-xs">11:00 AM</p>
+                        </div>
+                        <div class="time-slot rounded-md py-2 px-1 text-center">
+                            <p class="text-xs">12:00 PM</p>
+                        </div>
+                        <div class="time-slot rounded-md py-2 px-1 text-center">
+                            <p class="text-xs">2:00 PM</p>
+                        </div>
+                        <div class="time-slot rounded-md py-2 px-1 text-center">
+                            <p class="text-xs">3:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Service Selection -->
+            <section class="px-4 mb-4">
+                <h3 class="text-sm font-semibold mb-2">Select Service</h3>
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                            <label class="flex items-center">
+                                <input type="radio" name="service" class="mr-3 text-primary focus:ring-primary" checked>
+                                <div>
+                                    <p class="text-sm font-medium">General Consultation</p>
+                                    <p class="text-xs text-gray-500">15-30 minutes session</p>
+                                </div>
+                            </label>
+                            <p class="text-sm font-semibold">₹500</p>
+                        </div>
+                        
+                        <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                            <label class="flex items-center">
+                                <input type="radio" name="service" class="mr-3 text-primary focus:ring-primary">
+                                <div>
+                                    <p class="text-sm font-medium">Skin Examination</p>
+                                    <p class="text-xs text-gray-500">30-45 minutes session</p>
+                                </div>
+                            </label>
+                            <p class="text-sm font-semibold">₹800</p>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center">
+                                <input type="radio" name="service" class="mr-3 text-primary focus:ring-primary">
+                                <div>
+                                    <p class="text-sm font-medium">Allergy Testing</p>
+                                    <p class="text-xs text-gray-500">60 minutes session</p>
+                                </div>
+                            </label>
+                            <p class="text-sm font-semibold">₹1200</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Pet Selection -->
+            <section class="px-4 mb-4">
+                <h3 class="text-sm font-semibold mb-2">Select Pet</h3>
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <div class="flex overflow-x-auto hide-scrollbar pb-2 space-x-3">
+                        <div class="pet-card flex-shrink-0 w-32 rounded-lg p-3 selected">
+                            <div class="bg-gray-200 h-16 w-full rounded-lg mb-2 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm font-medium">Citty</p>
+                                <p class="text-xs text-gray-500">Siamese cat</p>
+                            </div>
+                        </div>
+                        
+                        <div class="pet-card flex-shrink-0 w-32 rounded-lg p-3">
+                            <div class="bg-gray-200 h-16 w-full rounded-lg mb-2 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm font-medium">Doggy</p>
+                                <p class="text-xs text-gray-500">German Shepherd</p>
+                            </div>
+                        </div>
+                        
+                        <div class="pet-card flex-shrink-0 w-32 rounded-lg p-3">
+                            <div class="bg-gray-200 h-16 w-full rounded-lg mb-2 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm font-medium">Add New Pet</p>
+                                <p class="text-xs text-gray-500">Click to add</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Additional Options -->
+            <section class="px-4 mb-4">
+                <h3 class="text-sm font-semibold mb-2">Additional Options</h3>
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="custom-checkbox mr-3">
+                                <div>
+                                    <p class="text-sm font-medium">Medication Review</p>
+                                    <p class="text-xs text-gray-500">Review pet's current medications</p>
+                                </div>
+                            </label>
+                            <p class="text-sm font-semibold">₹100</p>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="custom-checkbox mr-3">
+                                <div>
+                                    <p class="text-sm font-medium">Follow-up Reminder</p>
+                                    <p class="text-xs text-gray-500">Send reminder for follow-up visit</p>
+                                </div>
+                            </label>
+                            <p class="text-sm font-semibold">Free</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Notes Section -->
+            <section class="px-4 mb-4">
+                <h3 class="text-sm font-semibold mb-2">Special Instructions (Optional)</h3>
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <textarea class="w-full h-24 text-sm border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Add any special instructions or notes for the veterinarian..."></textarea>
+                </div>
+            </section>
+            
+            <!-- Cost Summary -->
+            <section class="px-4 mb-6">
+                <h3 class="text-sm font-semibold mb-2">Cost Summary</h3>
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm">General Consultation</p>
+                            <p class="text-sm">₹500</p>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm">Medication Review</p>
+                            <p class="text-sm">₹100</p>
+                        </div>
+                        <div class="border-t border-gray-100 pt-2 mt-2 flex items-center justify-between">
+                            <p class="text-sm font-semibold">Total Amount</p>
+                            <p class="text-sm font-semibold">₹600</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Confirmation Button -->
+            <section class="px-4">
+                <a href="appointment-confirmation.html" class="confirm-button block w-full bg-primary text-white text-center py-3 rounded-lg font-medium">Confirm Booking</a>
+            </section>
+        </main>
+    </div>
+
+    <!-- JavaScript for interactions -->
+    <script>
+        // Date picker functionality
+        const datePickers = document.querySelectorAll('.date-picker-day');
+        datePickers.forEach(day => {
+            day.addEventListener('click', function() {
+                datePickers.forEach(d => d.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        // Time slot functionality
+        const timeSlots = document.querySelectorAll('.time-slot');
+        timeSlots.forEach(slot => {
+            slot.addEventListener('click', function() {
+                timeSlots.forEach(s => s.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        // Pet card selection
+        const petCards = document.querySelectorAll('.pet-card');
+        petCards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Skip the "Add New Pet" card for selection
+                if (!this.querySelector('p').textContent.includes('Add New Pet')) {
+                    petCards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                } else {
+                    // Handle "Add New Pet" click
+                    alert('Add New Pet functionality would open here');
+                }
+            });
+        });
+        
+        // Checkbox functionality for additional charges
+        const checkboxes = document.querySelectorAll('.custom-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // Here you would update the total cost based on selections
+                // This is a simplified example
+                updateTotalCost();
+            });
+        });
+        
+        // Function to update total cost (simplified)
+        function updateTotalCost() {
+            let baseCost = 500; // General consultation
+            let additionalCost = 0;
+            
+            // Check if medication review is selected
+            if (checkboxes[0].checked) {
+                additionalCost += 100;
+            }
+            
+            const totalCost = baseCost + additionalCost;
+            
+            // Update the displayed total
+            document.querySelectorAll('.cost-summary p')[4].textContent = `₹${totalCost}`;
+        }
+    </script>
+</body>
+</html>

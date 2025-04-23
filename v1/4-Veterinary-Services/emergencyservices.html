@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Emergency Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-6 pb-20">
+        <!-- Header -->
+        <header class="mb-6 flex justify-between items-center">
+            <button class="text-gray-600">
+                <i data-feather="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">Emergency Services</h1>
+            <div class="w-6"></div>
+        </header>
+
+        <!-- Emergency Alert Banner -->
+        <section class="mb-6">
+            <div class="bg-red-600 text-white rounded-lg p-4 flex items-center">
+                <i data-feather="alert-triangle" class="w-8 h-8 mr-4"></i>
+                <div>
+                    <h2 class="font-bold text-lg">Urgent Situation?</h2>
+                    <p class="text-sm">Get immediate veterinary assistance</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Emergency Actions -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Immediate Assistance</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white rounded-lg shadow-md p-4 text-center hover:bg-red-50 transition">
+                    <i data-feather="phone" class="w-10 h-10 mx-auto mb-2 text-red-600"></i>
+                    <h3 class="font-semibold text-gray-800">Call Emergency Vet</h3>
+                    <p class="text-sm text-gray-500">Immediate Phone Support</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 text-center hover:bg-blue-50 transition">
+                    <i data-feather="video" class="w-10 h-10 mx-auto mb-2 text-blue-600"></i>
+                    <h3 class="font-semibold text-gray-800">Video Consultation</h3>
+                    <p class="text-sm text-gray-500">Instant Expert Advice</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nearby Emergency Clinics -->
+        <section class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-gray-800">Nearby Emergency Clinics</h2>
+                <button class="text-sm text-blue-600">View Map</button>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
+                    <div class="mr-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                            <i data-feather="map-pin" class="w-6 h-6 text-red-600"></i>
+                        </div>
+                    </div>
+                    <div className="flex-grow">
+                        <h3 class="font-semibold text-gray-800">24/7 Emergency Vet Clinic</h3>
+                        <p class="text-sm text-gray-500">3.2 miles away</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="bg-green-600 text-white px-3 py-2 rounded-lg text-sm flex items-center">
+                            <i data-feather="phone" class="w-4 h-4 mr-2"></i>
+                            Call
+                        </button>
+                        <button class="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm flex items-center">
+                            <i data-feather="navigation" class="w-4 h-4 mr-2"></i>
+                            Navigate
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
+                    <div class="mr-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                            <i data-feather="shield" class="w-6 h-6 text-red-600"></i>
+                        </div>
+                    </div>
+                    <div className="flex-grow">
+                        <h3 class="font-semibold text-gray-800">City Central Animal Hospital</h3>
+                        <p class="text-sm text-gray-500">5.7 miles away</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="bg-green-600 text-white px-3 py-2 rounded-lg text-sm flex items-center">
+                            <i data-feather="phone" class="w-4 h-4 mr-2"></i>
+                            Call
+                        </button>
+                        <button class="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm flex items-center">
+                            <i data-feather="navigation" class="w-4 h-4 mr-2"></i>
+                            Navigate
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emergency First Aid Guide -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">First Aid Guide</h2>
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <div class="flex items-center mb-3">
+                    <i data-feather="help-circle" class="w-6 h-6 text-blue-600 mr-3"></i>
+                    <p class="text-sm text-gray-700">Quick first aid tips for common pet emergencies</p>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-gray-100 rounded-lg p-2 text-center">
+                        <i data-feather="wind" class="w-8 h-8 mx-auto mb-2 text-green-600"></i>
+                        <p class="text-xs text-gray-700">Choking</p>
+                    </div>
+                    <div class="bg-gray-100 rounded-lg p-2 text-center">
+                        <i data-feather="droplet" class="w-8 h-8 mx-auto mb-2 text-blue-600"></i>
+                        <p class="text-xs text-gray-700">Bleeding</p>
+                    </div>
+                    <div class="bg-gray-100 rounded-lg p-2 text-center">
+                        <i data-feather="zap" class="w-8 h-8 mx-auto mb-2 text-yellow-600"></i>
+                        <p class="text-xs text-gray-700">Seizures</p>
+                    </div>
+                    <div class="bg-gray-100 rounded-lg p-2 text-center">
+                        <i data-feather="thermometer" class="w-8 h-8 mx-auto mb-2 text-red-600"></i>
+                        <p class="text-xs text-gray-700">Heatstroke</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emergency Preparedness -->
+        <section>
+            <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                <i data-feather="shield" class="w-12 h-12 mx-auto mb-4 text-blue-600"></i>
+                <h3 class="font-semibold text-gray-800 mb-2">Emergency Preparedness Kit</h3>
+                <p class="text-sm text-gray-500 mb-4">Create and maintain an emergency kit for your pet</p>
+                <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                    View Checklist
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

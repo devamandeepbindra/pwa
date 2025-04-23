@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Appointment Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-6 pb-20">
+        <!-- Header -->
+        <header class="mb-6 flex justify-between items-center">
+            <button class="text-gray-600">
+                <i data-feather="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">Appointment Details</h1>
+            <button class="text-gray-600">
+                <i data-feather="more-vertical" class="w-6 h-6"></i>
+            </button>
+        </header>
+
+        <!-- Veterinarian Profile -->
+        <section class="mb-6 bg-white rounded-lg shadow-md p-4 flex items-center">
+            <img src="https://placehold.co/50" alt="Dr. Emily Rodriguez" class="w-16 h-16 rounded-full mr-4">
+            <div>
+                <h2 class="text-lg font-bold text-gray-800">Dr. Emily Rodriguez</h2>
+                <p class="text-sm text-gray-500">Small Animal Specialist</p>
+            </div>
+        </section>
+
+        <!-- Appointment Overview -->
+        <section class="mb-6 bg-white rounded-lg shadow-md p-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs text-gray-500">Date</p>
+                    <p class="font-semibold text-gray-800">June 15, 2024</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Time</p>
+                    <p class="font-semibold text-gray-800">10:30 AM</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Pet</p>
+                    <p class="font-semibold text-gray-800">Fluffy</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Appointment Type</p>
+                    <p class="font-semibold text-gray-800">Routine Check-up</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pet Information -->
+        <section class="mb-6 bg-white rounded-lg shadow-md p-4">
+            <div class="flex items-center mb-4">
+                <img src="https://placehold.co/40" alt="Fluffy" class="w-12 h-12 rounded-full mr-4">
+                <div>
+                    <h3 class="font-semibold text-gray-800">Fluffy</h3>
+                    <p class="text-sm text-gray-500">Golden Retriever | 3 years old</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-3 text-center border-t pt-3">
+                <div>
+                    <p class="text-xs text-gray-500">Weight</p>
+                    <p class="font-semibold text-gray-800">25 kg</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Last Visit</p>
+                    <p class="font-semibold text-gray-800">March 15</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">Vaccinations</p>
+                    <p class="font-semibold text-green-600">Up to Date</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clinic Information -->
+        <section class="mb-6 bg-white rounded-lg shadow-md p-4">
+            <div class="flex items-center mb-3">
+                <i data-feather="map-pin" class="w-5 h-5 text-blue-600 mr-3"></i>
+                <div>
+                    <p class="font-semibold text-gray-800">PetCare Veterinary Clinic</p>
+                    <p class="text-sm text-gray-500">123 Pet Street, Veterinary District</p>
+                </div>
+            </div>
+            <div class="flex items-center mb-3">
+                <i data-feather="phone" class="w-5 h-5 text-green-600 mr-3"></i>
+                <p class="text-sm text-gray-700">(555) 123-4567</p>
+            </div>
+            <div class="flex items-center">
+                <i data-feather="clock" class="w-5 h-5 text-purple-600 mr-3"></i>
+                <div>
+                    <p class="text-sm text-gray-700">Open Today: 9:00 AM - 6:00 PM</p>
+                    <p class="text-xs text-gray-500">Monday - Saturday</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Appointment Notes -->
+        <section class="mb-6 bg-white rounded-lg shadow-md p-4">
+            <h3 class="font-semibold text-gray-800 mb-2">Notes</h3>
+            <p class="text-sm text-gray-600">Routine annual check-up and vaccination update. Please bring recent medical records.</p>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="space-y-4">
+            <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+                <i data-feather="video" class="w-5 h-5 mr-2"></i>
+                Start Video Consultation
+            </button>
+            <button class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition flex items-center justify-center">
+                <i data-feather="x-circle" class="w-5 h-5 mr-2"></i>
+                Cancel Appointment
+            </button>
+        </section>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

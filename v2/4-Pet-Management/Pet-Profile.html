@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0F4C75">
+    <title>Luvfurpaws - Pet Profile</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Take care of your furry friends with the Luvfurpaws app">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Luvfurpaws">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C75',
+                        secondary: '#3282B8',
+                        accent: '#F78D49',
+                        light: '#BBE1FA',
+                        dark: '#0A2D42'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .app-container {
+            width: 100%;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            background-color: #f8f8f8;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #777;
+        }
+
+        .bottom-nav-item.active {
+            color: #0F4C75;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        /* Pet profile photo bubble */
+        .pet-profile-photo {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #3282B8;
+            border: 4px solid white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: -60px auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pet-profile-photo .edit-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: #F78D49;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring__circle {
+            stroke-dasharray: 283;
+            transition: stroke-dashoffset 0.35s;
+            transform-origin: 50% 50%;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Badge styles */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-blue {
+            background-color: #BBE1FA;
+            color: #0F4C75;
+        }
+        
+        .badge-orange {
+            background-color: #FFECD3;
+            color: #F78D49;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="bg-primary text-white px-4 py-6 relative">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </a>
+                <h1 class="text-xl font-semibold">My Pets</h1>
+                <button>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Pet switcher -->
+            <div class="flex overflow-x-auto hide-scrollbar -mx-4 px-4 pt-3 pb-2">
+                <div class="flex-shrink-0 w-16 mx-2">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center border-4 border-white">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-xs text-center mt-1 text-white">Citty</p>
+                </div>
+                
+                <div class="flex-shrink-0 w-16 mx-2">
+                    <div class="w-14 h-14 bg-accent rounded-full flex items-center justify-center border-4 border-white">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-xs text-center mt-1 text-white font-medium">Doggy</p>
+                </div>
+                
+                <div class="flex-shrink-0 w-16 mx-2">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center border-4 border-white">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-xs text-center mt-1 text-white">Lio</p>
+                </div>
+                
+                <div class="flex-shrink-0 w-16 mx-2">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center border-4 border-white">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-xs text-center mt-1 text-white">Miky</p>
+                </div>
+                
+                <div class="flex-shrink-0 w-16 mx-2">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center border-4 border-white">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-xs text-center mt-1 text-white">Mily</p>
+                </div>
+                
+                <div class="flex-shrink-0 w-16 mx-2">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center border-4 border-white">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-xs text-center mt-1 text-white">Woof</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="pb-20 bg-white"> <!-- Added padding to account for bottom nav -->
+            <!-- Pet Info Section -->
+            <section class="bg-white pb-4 text-center relative">
+                <div class="pet-profile-photo">
+                    <div class="w-full h-full bg-secondary flex items-center justify-center text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0-5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z" />
+                        </svg>
+                    </div>
+                    <div class="edit-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <h2 class="text-xl font-bold mb-1">Doggy</h2>
+                <div class="text-sm text-gray-500 mb-4">6 year | German Shepherd</div>
+                
+                <div class="flex justify-center space-x-6 mb-4">
+                    <a href="#" class="edit-button flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <span class="text-xs">Edit</span>
+                    </a>
+                    
+                    <div class="health-score flex flex-col items-center">
+                        <div class="relative w-10 h-10 mb-1">
+                            <svg class="progress-ring" width="40" height="40">
+                                <circle class="progress-ring__circle" stroke="#E2E8F0" stroke-width="3" fill="transparent" r="15" cx="20" cy="20"/>
+                                <circle class="progress-ring__circle" stroke="#F78D49" stroke-width="3" fill="transparent" r="15" cx="20" cy="20" stroke-dashoffset="29"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center text-xs font-semibold">90%</div>
+                        </div>
+                        <span class="text-xs">Health</span>
+                    </div>
+                    
+                    <a href="#" class="reminder-button flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <span class="text-xs">Reminder</span>
+                    </a>
+                </div>
+                
+                <div class="flex flex-wrap justify-center px-4 mb-4">
+                    <div class="badge badge-blue m-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                        </svg>
+                        Vaccinated
+                    </div>
+                    <div class="badge badge-orange m-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                        </svg>
+                        Neutered
+                    </div>
+                    <div class="badge badge-blue m-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7 2a1 1 0 00-.707 1.707L7 4.414v3.758a1 1 0 01-.293.707l-4 4C.817 14.769 2.156 18 4.828 18h10.343c2.673 0 4.012-3.231 2.122-5.121l-4-4A1 1 0 0113 8.172V4.414l.707-.707A1 1 0 0013 2H7z" />
+                        </svg>
+                        Microchipped
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Tab Navigation -->
+            <section class="px-4 mb-4">
+                <div class="flex border-b border-gray-200">
+                    <button class="tab-button flex-1 py-3 px-4 font-medium text-center text-primary border-b-2 border-primary" data-tab="about">
+                        About
+                    </button>
+                    <button class="tab-button flex-1 py-3 px-4 font-medium text-center text-gray-500" data-tab="health">
+                        Health
+                    </button>
+                    <button class="tab-button flex-1 py-3 px-4 font-medium text-center text-gray-500" data-tab="gallery">
+                        Gallery
+                    </button>
+                </div>
+            </section>
+            
+            <!-- Tab Content -->
+            <section class="px-4">
+                <!-- About Tab -->
+                <div id="aboutTab" class="tab-content active">
+                    <!-- Basic Info -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3">Basic Information</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <div class="text-xs text-gray-500 mb-1">Breed</div>
+                                <div class="text-sm font-medium">German Shepherd</div>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <div class="text-xs text-gray-500 mb-1">Age</div>
+                                <div class="text-sm font-medium">6 years</div>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <div class="text-xs text-gray-500 mb-1">Weight</div>
+                                <div class="text-sm font-medium">32 kg</div>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <div class="text-xs text-gray-500 mb-1">Gender</div>
+                                <div class="text-sm font-medium">Male</div>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <div class="text-xs text-gray-500 mb-1">Color</div>
+                                <div class="text-sm font-medium">Black & Tan</div>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <div class="text-xs text-gray-500 mb-1">Birthday</div>
+                                <div class="text-sm font-medium">12 June 2017</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pet Story -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3">Pet Story</h3>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-sm text-gray-700 mb-3">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            </p>
+                            <p class="text-sm text-gray-700">
+                                Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Allergies -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3">Allergies</h3>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex flex-wrap gap-2">
+                                <div class="badge badge-orange">Chicken</div>
+                                <div class="badge badge-orange">Dairy</div>
+                                <div class="badge badge-orange">Pollen</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Health Tab -->
+                <div id="healthTab" class="tab-content">
+                    <!-- Vaccination Records -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3">Vaccination Records</h3>
+                        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="p-3 border-b border-gray-200">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">Rabies Vaccine</h4>
+                                        <p class="text-xs text-gray-500">Last dose: 15 Jan 2023</p>
+                                    </div>
+                                    <div class="badge badge-blue text-xs">Valid</div>
+                                </div>
+                                <div class="mt-2 text-xs text-gray-500">
+                                    <span class="font-medium">Next dose:</span> 15 Jan 2026
+                                </div>
+                            </div>
+                            
+                            <div class="p-3 border-b border-gray-200">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">DHPP Vaccine</h4>
+                                        <p class="text-xs text-gray-500">Last dose: 22 May 2023</p>
+                                    </div>
+                                    <div class="badge badge-blue text-xs">Valid</div>
+                                </div>
+                                <div class="mt-2 text-xs text-gray-500">
+                                    <span class="font-medium">Next dose:</span> 22 May 2024
+                                </div>
+                            </div>
+                            
+                            <div class="p-3">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">Bordetella Vaccine</h4>
+                                        <p class="text-xs text-gray-500">Last dose: 10 Dec 2022</p>
+                                    </div>
+                                    <div class="badge badge-orange text-xs">Expired</div>
+                                </div>
+                                <div class="mt-2 text-xs text-gray-500">
+                                    <span class="font-medium">Next dose:</span> Overdue
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Medical Records -->
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-lg font-semibold">Medical Records</h3>
+                            <button class="text-primary text-sm font-medium">See All</button>
+                        </div>
+                        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="p-3 border-b border-gray-200">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">Annual Checkup</h4>
+                                        <p class="text-xs text-gray-500">23 March 2023</p>
+                                    </div>
+                                    <button class="text-primary text-xs">View</button>
+                                </div>
+                                <div class="mt-2 text-xs text-gray-700">
+                                    Regular annual checkup. All parameters normal.
+                                </div>
+                            </div>
+                            
+                            <div class="p-3">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">Dental Cleaning</h4>
+                                        <p class="text-xs text-gray-500">18 November 2022</p>
+                                    </div>
+                                    <button class="text-primary text-xs">View</button>
+                                </div>
+                                <div class="mt-2 text-xs text-gray-700">
+                                    Professional dental cleaning performed under anesthesia.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Medication -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3">Current Medication</h3>
+                        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="p-3 border-b border-gray-200">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">Nexgard chewables, 10 mg</h4>
+                                        <p class="text-xs text-gray-500">Flea and tick prevention</p>
+                                    </div>
+                                    <div class="badge badge-blue text-xs">Monthly</div>
+                                </div>
+                                <div class="mt-2 text-xs text-gray-500">
+                                    <span class="font-medium">Next dose:</span> 15 May 2023
+                                </div>
+                            </div>
+                            
+                            <div class="p-3">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">Heartgard Plus</h4>
+                                        <p class="text-xs text-gray-500">Heartworm prevention</p>
+                                    </div>
+                                    <div class="badge badge-blue text-xs">Monthly</div>
+                                </div>
+                                <div class="mt-2 text-xs text-gray-500">
+                                    <span class="font-medium">Next dose:</span> 1 May 2023
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gallery Tab -->
+                <div id="galleryTab" class="tab-content">
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-lg font-semibold">Photos & Videos</h3>
+                            <button class="text-primary text-sm font-medium flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                                </svg>
+                                Add New
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                                <div class="w-full h-full bg-gray-300 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                                <div class="w-full h-full bg-gray-300 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                                <div class="w-full h-full bg-gray-300 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                                <div class="w-full h-full bg-gray-300 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                                <div class="w-full h-full bg-gray-300 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                                <div class="w-full h-full bg-gray-300 flex items-center justify-center relative">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                                    </svg>
+                                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center text-white font-medium">
+                                        +8
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Add new pet button -->
+            <div class="fixed bottom-20 right-6">
+                <button class="bg-accent w-14 h-14 rounded-full shadow-lg flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav shadow-lg">
+            <a href="#" class="bottom-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="#" class="bottom-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span class="text-xs">Shop</span>
+            </a>
+            <a href="#" class="bottom-nav-item active">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <span class="text-xs">Wellness</span>
+            </a>
+            <a href="#" class="bottom-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span class="text-xs">Insurance</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- JavaScript for interactions -->
+    <script>
+        // Tab switching
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and tabs
+                tabButtons.forEach(btn => btn.classList.remove('text-primary', 'border-primary'));
+                tabButtons.forEach(btn => btn.classList.add('text-gray-500'));
+                tabContents.forEach(tab => tab.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('text-primary', 'border-primary');
+                button.classList.remove('text-gray-500');
+                
+                // Show the corresponding tab
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId + 'Tab').classList.add('active');
+            });
+        });
+        
+        // Calculate progress circle
+        const progressCircle = document.querySelector('.progress-ring__circle');
+        const circumference = 2 * Math.PI * 15; // 2πr
+        progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+        
+        // Set to 90% health (10% of circumference is shown)
+        const healthPercentage = 90;
+        const offset = circumference - (healthPercentage / 100 * circumference);
+        progressCircle.style.strokeDashoffset = offset;
+        
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                }).catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

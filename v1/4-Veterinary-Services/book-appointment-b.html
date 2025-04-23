@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Select Appointment Time</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-6 pb-20">
+        <!-- Header -->
+        <header class="mb-6 flex justify-between items-center">
+            <button class="text-gray-600">
+                <i data-feather="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">Select Date & Time</h1>
+            <div class="w-6"></div>
+        </header>
+
+        <!-- Appointment Details -->
+        <section class="mb-6 bg-white rounded-lg shadow-md p-4">
+            <div class="flex items-center">
+                <img src="https://placehold.co/40" alt="Dr. Emily Rodriguez" class="w-12 h-12 rounded-full mr-4">
+                <div>
+                    <h2 class="font-bold text-gray-800">Dr. Emily Rodriguez</h2>
+                    <p class="text-sm text-gray-500">Routine Check-up | Fluffy</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calendar Navigation -->
+        <section class="mb-6 bg-white rounded-lg shadow-md">
+            <div class="flex justify-between items-center p-4">
+                <button class="text-gray-600 hover:bg-gray-100 p-2 rounded-full">
+                    <i data-feather="chevron-left" class="w-6 h-6"></i>
+                </button>
+                <h2 class="text-lg font-semibold text-gray-800">June 2024</h2>
+                <button class="text-gray-600 hover:bg-gray-100 p-2 rounded-full">
+                    <i data-feather="chevron-right" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="grid grid-cols-7 text-center border-t">
+                <div class="py-2 text-xs text-gray-500 font-medium">Sun</div>
+                <div class="py-2 text-xs text-gray-500 font-medium">Mon</div>
+                <div class="py-2 text-xs text-gray-500 font-medium">Tue</div>
+                <div class="py-2 text-xs text-gray-500 font-medium">Wed</div>
+                <div class="py-2 text-xs text-gray-500 font-medium">Thu</div>
+                <div class="py-2 text-xs text-gray-500 font-medium">Fri</div>
+                <div class="py-2 text-xs text-gray-500 font-medium">Sat</div>
+
+                <div class="py-2 text-gray-400">26</div>
+                <div class="py-2 text-gray-400">27</div>
+                <div class="py-2 text-gray-400">28</div>
+                <div class="py-2">1</div>
+                <div class="py-2">2</div>
+                <div class="py-2 bg-blue-100 relative">
+                    <span class="inline-block w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center relative z-10">3</span>
+                </div>
+                <div class="py-2">4</div>
+
+                <div class="py-2">5</div>
+                <div class="py-2">6</div>
+                <div class="py-2">7</div>
+                <div class="py-2">8</div>
+                <div class="py-2 bg-blue-100 relative">
+                    <span class="inline-block w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center relative z-10">15</span>
+                </div>
+                <div class="py-2">16</div>
+                <div class="py-2">17</div>
+            </div>
+        </section>
+
+        <!-- Available Time Slots -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Available Time Slots</h2>
+            <div class="grid grid-cols-3 gap-2">
+                <button class="bg-white rounded-lg shadow-md p-2 text-center hover:bg-blue-50">
+                    <span class="text-sm text-gray-700">09:00 AM</span>
+                </button>
+                <button class="bg-white rounded-lg shadow-md p-2 text-center hover:bg-blue-50">
+                    <span class="text-sm text-gray-700">10:30 AM</span>
+                </button>
+                <button class="bg-white rounded-lg shadow-md p-2 text-center hover:bg-blue-50">
+                    <span class="text-sm text-gray-700">11:45 AM</span>
+                </button>
+                <button class="bg-white rounded-lg shadow-md p-2 text-center hover:bg-blue-50">
+                    <span class="text-sm text-gray-700">01:15 PM</span>
+                </button>
+                <button class="bg-white rounded-lg shadow-md p-2 text-center hover:bg-blue-50">
+                    <span class="text-sm text-gray-700">02:45 PM</span>
+                </button>
+                <button class="bg-white rounded-lg shadow-md p-2 text-center hover:bg-blue-50">
+                    <span class="text-sm text-gray-700">04:00 PM</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Continue Button -->
+        <section>
+            <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+                Continue
+                <i data-feather="arrow-right" class="w-5 h-5 ml-2"></i>
+            </button>
+        </section>
+    </div>
+
+    <script>
+        feather.replace();
+
+        // Add interactive selection for time slots
+        document.querySelectorAll('.grid-cols-3 button').forEach(el => {
+            el.addEventListener('click', function() {
+                // Remove active state from all time slots
+                this.closest('section').querySelectorAll('button').forEach(item => {
+                    item.classList.remove('border-2', 'border-blue-600');
+                });
+                
+                // Add active state to clicked element
+                this.classList.add('border-2', 'border-blue-600');
+            });
+        });
+    </script>
+</body>
+</html>

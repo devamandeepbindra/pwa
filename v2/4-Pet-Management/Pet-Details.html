@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0F4C75">
+    <title>Luvfurpaws - Pet Details</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="View and manage your pet's details with Luvfurpaws">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Luvfurpaws">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C75',
+                        secondary: '#3282B8',
+                        accent: '#F78D49',
+                        light: '#BBE1FA',
+                        dark: '#0A2D42'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .app-container {
+            width: 100%;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            background-color: #f8f8f8;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #777;
+        }
+
+        .bottom-nav-item.active {
+            color: #0F4C75;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        .pet-info-card {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .pet-avatar {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .pet-avatar::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background-color: #3282B8;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+        
+        .edit-button {
+            transition: all 0.2s ease;
+        }
+        
+        .edit-button:active {
+            transform: scale(0.95);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 12px;
+        }
+        
+        .tab-item {
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .tab-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: transparent;
+            transition: background-color 0.2s ease;
+        }
+        
+        .tab-item.active::after {
+            background-color: #3282B8;
+        }
+        
+        /* Progress bar style */
+        .progress-bar {
+            position: relative;
+            height: 8px;
+            background-color: #E5E7EB;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-value {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #3282B8;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="bg-dark text-white px-4 py-3 flex items-center justify-between shadow-md">
+            <button class="text-white" onclick="history.back()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <h1 class="text-lg font-semibold">Pet Details</h1>
+            <button class="edit-button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                </svg>
+            </button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="pb-20">
+            <!-- Pet Info Section -->
+            <section class="bg-primary pt-6 pb-8 px-4">
+                <div class="flex items-center text-white">
+                    <div class="pet-avatar bg-gray-100 w-20 h-20 rounded-full flex items-center justify-center mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold">Citty</h2>
+                        <div class="flex items-center">
+                            <div class="bg-light text-primary rounded px-2 py-0.5 text-xs font-medium mr-2">
+                                Siamese cat
+                            </div>
+                            <span class="text-sm text-light">11 Months</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Tabs Navigation -->
+            <section class="bg-white px-4 py-2 shadow-sm">
+                <div class="flex">
+                    <div class="tab-item active flex-1 text-center text-sm font-medium">
+                        About
+                    </div>
+                    <div class="tab-item flex-1 text-center text-sm font-medium text-gray-500">
+                        Vaccination Reminders
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Pet Stats Cards -->
+            <section class="p-4 grid grid-cols-3 gap-4">
+                <div class="bg-white rounded-lg p-3 pet-info-card flex flex-col items-center justify-center">
+                    <div class="text-xs text-gray-500 mb-1">Breed</div>
+                    <div class="font-medium text-sm">Siamese cat</div>
+                </div>
+                <div class="bg-white rounded-lg p-3 pet-info-card flex flex-col items-center justify-center">
+                    <div class="text-xs text-gray-500 mb-1">Age</div>
+                    <div class="font-medium text-sm">11 Months</div>
+                </div>
+                <div class="bg-white rounded-lg p-3 pet-info-card flex flex-col items-center justify-center">
+                    <div class="text-xs text-gray-500 mb-1">Weight</div>
+                    <div class="font-medium text-sm">4 kg</div>
+                </div>
+            </section>
+            
+            <!-- About Pet Section -->
+            <section class="px-4 mb-6">
+                <div class="bg-white rounded-lg p-4 pet-info-card">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                        </svg>
+                        About
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-3">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
+                    <p class="text-sm text-gray-600">
+                        Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada.
+                    </p>
+                </div>
+            </section>
+            
+            <!-- Vaccination Reminders -->
+            <section class="px-4 mb-6">
+                <div class="bg-white rounded-lg p-4 pet-info-card">
+                    <h3 class="font-medium mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                        </svg>
+                        Vaccination Reminders
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h4 class="font-medium text-sm">Nexgard chewables, 10 mg</h4>
+                                <p class="text-xs text-gray-500">1 Tablet, per day</p>
+                                <p class="text-xs text-gray-500 mt-1">12:20 - 01:20</p>
+                            </div>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Photos Section -->
+            <section class="px-4 mb-6">
+                <div class="bg-white rounded-lg p-4 pet-info-card">
+                    <h3 class="font-medium mb-4 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                            </svg>
+                            Photos
+                        </div>
+                        <button class="text-primary text-sm font-medium">Add Photo</button>
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-gray-100 h-24 rounded"></div>
+                        <div class="bg-gray-100 h-24 rounded"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav shadow-lg">
+            <a href="#" class="bottom-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="#" class="bottom-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span class="text-xs">Shop</span>
+            </a>
+            <a href="#" class="bottom-nav-item active">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <span class="text-xs">My Pet</span>
+            </a>
+            <a href="#" class="bottom-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span class="text-xs">Insurance</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- JavaScript for interactions -->
+    <script>
+        // Tabs switching functionality
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab-item').forEach(t => {
+                    t.classList.remove('active');
+                    t.classList.add('text-gray-500');
+                });
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                this.classList.remove('text-gray-500');
+                
+                // Handle tab content changes here
+                // You would typically show/hide content based on the selected tab
+            });
+        });
+        
+        // Edit button functionality
+        document.querySelector('.edit-button').addEventListener('click', function() {
+            // Navigate to edit pet details page (placeholder)
+            console.log('Navigating to edit pet details page');
+            // window.location.href = '/edit-pet-details.html';
+        });
+        
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                }).catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

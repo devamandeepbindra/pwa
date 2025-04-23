@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Notifications Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-6 pb-20">
+        <!-- Header -->
+        <header class="mb-6 flex justify-between items-center">
+            <button class="text-gray-600">
+                <i data-feather="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">Notifications</h1>
+            <div class="flex space-x-3">
+                <button class="text-gray-600">
+                    <i data-feather="settings" class="w-6 h-6"></i>
+                </button>
+                <button class="text-gray-600">
+                    <i data-feather="check-square" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Filters -->
+        <section class="mb-6">
+            <div class="overflow-x-auto">
+                <div class="flex space-x-3 pb-3">
+                    <button class="flex-shrink-0 bg-blue-600 text-white px-4 py-2 rounded-full">
+                        All
+                    </button>
+                    <button class="flex-shrink-0 bg-gray-200 text-gray-700 px-4 py-2 rounded-full">
+                        Unread
+                    </button>
+                    <button class="flex-shrink-0 bg-gray-200 text-gray-700 px-4 py-2 rounded-full">
+                        Mentions
+                    </button>
+                    <button class="flex-shrink-0 bg-gray-200 text-gray-700 px-4 py-2 rounded-full">
+                        Reminders
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Today Section -->
+        <section class="mb-8">
+            <h2 class="text-sm font-semibold text-gray-500 mb-3">TODAY</h2>
+            <div class="space-y-4">
+                <!-- Unread Notification -->
+                <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
+                    <div class="flex justify-between mb-2">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                <i data-feather="message-circle" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-800">New Reply</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-xs text-gray-500 mr-2">2h ago</span>
+                            <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 ml-10">Jessica M. replied to your comment in <span class="font-medium">Best Dog Training Techniques</span></p>
+                    <div class="ml-10 mt-2 p-2 bg-gray-50 rounded text-sm text-gray-600 border-l-2 border-gray-300">
+                        "Thanks for the suggestion! I've been trying that method and it's already showing results."
+                    </div>
+                </div>
+
+                <!-- Read Notification -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between mb-2">
+                        <div class="flex items-center">
+                            <div class="bg-green-100 p-2 rounded-full mr-3">
+                                <i data-feather="calendar" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-800">Vet Appointment</span>
+                        </div>
+                        <span class="text-xs text-gray-500">5h ago</span>
+                    </div>
+                    <p class="text-sm text-gray-600 ml-10">Reminder: Max's annual checkup tomorrow at 2:00 PM with Dr. Wilson</p>
+                    <div class="ml-10 mt-2 flex space-x-2">
+                        <button class="bg-blue-600 text-white text-xs px-3 py-1 rounded">
+                            Confirm
+                        </button>
+                        <button class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded">
+                            Reschedule
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mention Notification -->
+                <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
+                    <div class="flex justify-between mb-2">
+                        <div class="flex items-center">
+                            <div class="bg-purple-100 p-2 rounded-full mr-3">
+                                <i data-feather="at-sign" class="w-5 h-5 text-purple-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-800">Mention</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-xs text-gray-500 mr-2">6h ago</span>
+                            <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 ml-10">Michael T. mentioned you in <span class="font-medium">Nutrition for Senior Cats</span></p>
+                    <div class="ml-10 mt-2 p-2 bg-gray-50 rounded text-sm text-gray-600 border-l-2 border-gray-300">
+                        "Hey @username, what supplements do you use for your 12-year-old cat?"
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Yesterday Section -->
+        <section class="mb-8">
+            <h2 class="text-sm font-semibold text-gray-500 mb-3">YESTERDAY</h2>
+            <div class="space-y-4">
+                <!-- Forum Activity -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between mb-2">
+                        <div class="flex items-center">
+                            <div class="bg-orange-100 p-2 rounded-full mr-3">
+                                <i data-feather="trending-up" class="w-5 h-5 text-orange-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-800">Trending Topic</span>
+                        </div>
+                        <span class="text-xs text-gray-500">1d ago</span>
+                    </div>
+                    <p class="text-sm text-gray-600 ml-10">Your post <span class="font-medium">Introducing New Pet to Home</span> is now trending with 50+ replies</p>
+                </div>
+
+                <!-- System Notification -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between mb-2">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                <i data-feather="info" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-800">App Update</span>
+                        </div>
+                        <span class="text-xs text-gray-500">1d ago</span>
+                    </div>
+                    <p class="text-sm text-gray-600 ml-10">PetCare v2.3 is now available with new features and improvements</p>
+                    <div class="ml-10 mt-2">
+                        <button class="bg-blue-600 text-white text-xs px-3 py-1 rounded">
+                            Update Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- This Week Section -->
+        <section>
+            <h2 class="text-sm font-semibold text-gray-500 mb-3">THIS WEEK</h2>
+            <div class="space-y-4">
+                <!-- Vaccination Reminder -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between mb-2">
+                        <div class="flex items-center">
+                            <div class="bg-red-100 p-2 rounded-full mr-3">
+                                <i data-feather="alert-circle" class="w-5 h-5 text-red-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-800">Vaccination Due</span>
+                        </div>
+                        <span class="text-xs text-gray-500">3d ago</span>
+                    </div>
+                    <p class="text-sm text-gray-600 ml-10">Bella's rabies vaccination is due in 7 days</p>
+                    <div class="ml-10 mt-2">
+                        <button class="bg-blue-600 text-white text-xs px-3 py-1 rounded">
+                            Schedule Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- New Article -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between mb-2">
+                        <div class="flex items-center">
+                            <div class="bg-green-100 p-2 rounded-full mr-3">
+                                <i data-feather="file-text" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-800">New Article</span>
+                        </div>
+                        <span class="text-xs text-gray-500">4d ago</span>
+                    </div>
+                    <p class="text-sm text-gray-600 ml-10">New article in topics you follow: <span class="font-medium">Summer Safety Tips for Pets</span></p>
+                    <div class="ml-10 mt-2 flex">
+                        <img src="/api/placeholder/60/40" alt="Article Thumbnail" class="w-15 h-10 object-cover rounded mr-2">
+                        <div class="text-xs text-gray-500">
+                            <p>Learn how to keep your pets safe during hot weather...</p>
+                            <button class="text-blue-600 mt-1">Read More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

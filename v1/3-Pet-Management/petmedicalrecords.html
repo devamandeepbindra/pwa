@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Pet Medical Records</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-6 pb-20">
+        <!-- Header -->
+        <header class="mb-6 flex justify-between items-center">
+            <button class="text-gray-600">
+                <i data-feather="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">Medical Records</h1>
+            <button class="text-gray-600">
+                <i data-feather="plus" class="w-6 h-6"></i>
+            </button>
+        </header>
+
+        <!-- Pet Summary -->
+        <section class="mb-6 bg-white rounded-lg shadow-md p-4 flex items-center">
+            <img src="https://placehold.co/50" alt="Fluffy" class="w-16 h-16 rounded-full mr-4">
+            <div>
+                <h2 class="text-lg font-bold text-gray-800">Fluffy</h2>
+                <p class="text-sm text-gray-500">Golden Retriever | 3 years old</p>
+            </div>
+        </section>
+
+        <!-- Record Categories -->
+        <section class="mb-6">
+            <div class="grid grid-cols-4 gap-2">
+                <button class="bg-blue-600 text-white py-2 rounded-lg text-xs">
+                    All
+                </button>
+                <button class="bg-gray-200 text-gray-700 py-2 rounded-lg text-xs">
+                    Vaccines
+                </button>
+                <button class="bg-gray-200 text-gray-700 py-2 rounded-lg text-xs">
+                    Check-ups
+                </button>
+                <button class="bg-gray-200 text-gray-700 py-2 rounded-lg text-xs">
+                    Treatments
+                </button>
+            </div>
+        </section>
+
+        <!-- Medical Records List -->
+        <section class="space-y-4">
+            <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
+                <div class="mr-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <i data-feather="activity" class="w-6 h-6 text-green-600"></i>
+                    </div>
+                </div>
+                <div className="flex-grow">
+                    <h3 class="font-semibold text-gray-800">Annual Vaccination</h3>
+                    <p class="text-sm text-gray-500">Dr. Michael Chen</p>
+                    <p class="text-xs text-gray-400">June 2, 2024 | Rabies, DHPP</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button class="text-blue-600 hover:bg-blue-100 p-2 rounded-full">
+                        <i data-feather="download" class="w-5 h-5"></i>
+                    </button>
+                    <button class="text-gray-500 hover:bg-gray-100 p-2 rounded-full">
+                        <i data-feather="more-vertical" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
+                <div class="mr-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i data-feather="clipboard" class="w-6 h-6 text-blue-600"></i>
+                    </div>
+                </div>
+                <div className="flex-grow">
+                    <h3 class="font-semibold text-gray-800">Annual Health Check-up</h3>
+                    <p class="text-sm text-gray-500">Dr. Sarah Thompson</p>
+                    <p class="text-xs text-gray-400">May 1, 2024 | Full Physical Exam</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button class="text-blue-600 hover:bg-blue-100 p-2 rounded-full">
+                        <i data-feather="download" class="w-5 h-5"></i>
+                    </button>
+                    <button class="text-gray-500 hover:bg-gray-100 p-2 rounded-full">
+                        <i data-feather="more-vertical" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
+                <div class="mr-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                        <i data-feather="heart" class="w-6 h-6 text-purple-600"></i>
+                    </div>
+                </div>
+                <div className="flex-grow">
+                    <h3 class="font-semibold text-gray-800">Dental Cleaning</h3>
+                    <p class="text-sm text-gray-500">Dr. Emily Rodriguez</p>
+                    <p class="text-xs text-gray-400">March 15, 2024 | Teeth Scaling</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button class="text-blue-600 hover:bg-blue-100 p-2 rounded-full">
+                        <i data-feather="download" class="w-5 h-5"></i>
+                    </button>
+                    <button class="text-gray-500 hover:bg-gray-100 p-2 rounded-full">
+                        <i data-feather="more-vertical" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
+                <div class="mr-4">
+                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                        <i data-feather="alert-circle" class="w-6 h-6 text-orange-600"></i>
+                    </div>
+                </div>
+                <div className="flex-grow">
+                    <h3 class="font-semibold text-gray-800">Minor Injury Treatment</h3>
+                    <p class="text-sm text-gray-500">Dr. John Williams</p>
+                    <p class="text-xs text-gray-400">January 10, 2024 | Paw Wound</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button class="text-blue-600 hover:bg-blue-100 p-2 rounded-full">
+                        <i data-feather="download" class="w-5 h-5"></i>
+                    </button>
+                    <button class="text-gray-500 hover:bg-gray-100 p-2 rounded-full">
+                        <i data-feather="more-vertical" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Record Request and Upload -->
+        <section class="mt-6">
+            <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                <i data-feather="upload-cloud" class="w-12 h-12 mx-auto mb-4 text-blue-600"></i>
+                <h3 class="font-semibold text-gray-800 mb-2">Upload Medical Record</h3>
+                <p class="text-sm text-gray-500 mb-4">Add a new medical record from your device</p>
+                <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                    Upload Record
+                </button>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-lg">
+            <div class="grid grid-cols-5 py-3">
+                <button class="flex flex-col items-center text-gray-500 hover:text-blue-600">
+                    <i data-feather="home" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Home</span>
+                </button>
+                <button class="flex flex-col items-center text-gray-500 hover:text-blue-600">
+                    <i data-feather="calendar" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Appointments</span>
+                </button>
+                <button class="flex flex-col items-center text-blue-600">
+                    <i data-feather="heart" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Pets</span>
+                </button>
+                <button class="flex flex-col items-center text-gray-500 hover:text-blue-600">
+                    <i data-feather="shopping-bag" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Shop</span>
+                </button>
+                <button class="flex flex-col items-center text-gray-500 hover:text-blue-600">
+                    <i data-feather="user" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Profile</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

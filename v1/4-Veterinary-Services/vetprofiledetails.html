@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Veterinarian Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-6 pb-20">
+        <!-- Header -->
+        <header class="mb-6 flex justify-between items-center">
+            <button class="text-gray-600">
+                <i data-feather="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">Veterinarian Profile</h1>
+            <button class="text-gray-600">
+                <i data-feather="share-2" class="w-6 h-6"></i>
+            </button>
+        </header>
+
+        <!-- Veterinarian Profile Summary -->
+        <section class="mb-6 bg-white rounded-lg shadow-md p-6 text-center">
+            <img src="https://placehold.co/100" alt="Dr. Emily Rodriguez" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-blue-100">
+            <h2 class="text-xl font-bold text-gray-800">Dr. Emily Rodriguez</h2>
+            <p class="text-sm text-gray-500">Small Animal Specialist</p>
+            <div class="flex items-center justify-center mt-2">
+                <div class="flex text-yellow-400 mr-2">
+                    <i data-feather="star" class="w-5 h-5 fill-current"></i>
+                    <i data-feather="star" class="w-5 h-5 fill-current"></i>
+                    <i data-feather="star" class="w-5 h-5 fill-current"></i>
+                    <i data-feather="star" class="w-5 h-5 fill-current"></i>
+                    <i data-feather="star" class="w-5 h-5 fill-current"></i>
+                </div>
+                <span class="text-sm text-gray-600">(4.8) 120 reviews</span>
+            </div>
+        </section>
+
+        <!-- Clinic Information -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Clinic Details</h2>
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <div class="flex items-center mb-3">
+                    <i data-feather="map-pin" class="w-5 h-5 text-blue-600 mr-3"></i>
+                    <div>
+                        <p class="font-semibold text-gray-800">PetCare Veterinary Clinic</p>
+                        <p class="text-sm text-gray-500">123 Pet Street, Veterinary District</p>
+                    </div>
+                </div>
+                <div class="flex items-center mb-3">
+                    <i data-feather="phone" class="w-5 h-5 text-green-600 mr-3"></i>
+                    <p class="text-sm text-gray-700">(555) 123-4567</p>
+                </div>
+                <div class="flex items-center">
+                    <i data-feather="clock" class="w-5 h-5 text-purple-600 mr-3"></i>
+                    <div>
+                        <p class="text-sm text-gray-700">Open Today: 9:00 AM - 6:00 PM</p>
+                        <p class="text-xs text-gray-500">Monday - Saturday</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Specialties and Services -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Specialties</h2>
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full text-center">
+                        Dogs
+                    </div>
+                    <div class="bg-green-50 text-green-700 text-xs px-2 py-1 rounded-full text-center">
+                        Cats
+                    </div>
+                    <div class="bg-purple-50 text-purple-700 text-xs px-2 py-1 rounded-full text-center">
+                        Preventive Care
+                    </div>
+                    <div class="bg-orange-50 text-orange-700 text-xs px-2 py-1 rounded-full text-center">
+                        Surgery
+                    </div>
+                    <div class="bg-red-50 text-red-700 text-xs px-2 py-1 rounded-full text-center">
+                        Emergency
+                    </div>
+                    <div class="bg-yellow-50 text-yellow-700 text-xs px-2 py-1 rounded-full text-center">
+                        Vaccinations
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About the Veterinarian -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">About Dr. Rodriguez</h2>
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <p class="text-sm text-gray-700 leading-relaxed">
+                    Dr. Emily Rodriguez is a dedicated small animal specialist with over 10 years of experience in veterinary medicine. She is passionate about providing comprehensive care for pets and ensuring their health and happiness.
+                </p>
+            </div>
+        </section>
+
+        <!-- Professional Credentials -->
+        <section class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Credentials</h2>
+            <div class="bg-white rounded-lg shadow-md p-4 divide-y">
+                <div class="flex justify-between py-3">
+                    <span class="text-gray-700">Veterinary Degree</span>
+                    <span class="font-semibold">University of Veterinary Medicine</span>
+                </div>
+                <div class="flex justify-between py-3">
+                    <span class="text-gray-700">Certification</span>
+                    <span>Board Certified Small Animal Practice</span>
+                </div>
+                <div class="flex justify-between py-3">
+                    <span class="text-gray-700">Years of Experience</span>
+                    <span>10+ Years</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Patient Reviews -->
+        <section class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-gray-800">Patient Reviews</h2>
+                <a href="#" class="text-sm text-blue-600 hover:text-blue-800">See All Reviews</a>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex items-center mb-2">
+                        <img src="https://placehold.co/40" alt="Reviewer" class="w-10 h-10 rounded-full mr-3">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Jessica M.</h3>
+                            <div class="flex text-yellow-400">
+                                <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700">Dr. Rodriguez is amazing! She's so caring and thorough with my pets. Highly recommend!</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <div class="flex items-center mb-2">
+                        <img src="https://placehold.co/40" alt="Reviewer" class="w-10 h-10 rounded-full mr-3">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Michael T.</h3>
+                            <div class="flex text-yellow-400">
+                                <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                <i data-feather="star-half" class="w-4 h-4 fill-current"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700">Professional and knowledgeable. The clinic is clean and the staff is friendly.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Book Appointment -->
+        <section class="mt-6">
+            <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+                <i data-feather="calendar" class="w-5 h-5 mr-2"></i>
+                Book Appointment
+            </button>
+        </section>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-lg">
+            <div class="grid grid-cols-5 py-3">
+                <button class="flex flex-col items-center text-gray-500 hover:text-blue-600">
+                    <i data-feather="home" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Home</span>
+                </button>
+                <button class="flex flex-col items-center text-blue-600">
+                    <i data-feather="calendar" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Vets</span>
+                </button>
+                <button class="flex flex-col items-center text-gray-500 hover:text-blue-600">
+                    <i data-feather="heart" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Pets</span>
+                </button>
+                <button class="flex flex-col items-center text-gray-500 hover:text-blue-600">
+                    <i data-feather="shopping-bag" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Shop</span>
+                </button>
+                <button class="flex flex-col items-center text-gray-500 hover:text-blue-600">
+                    <i data-feather="user" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Profile</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>
